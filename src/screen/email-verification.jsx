@@ -55,7 +55,7 @@ const EmailVerification = () => {
         >
           <div className="bg-black bg-opacity-55 flex items-center h-full justify-center">
             <img
-              className="w-56 h-20 animate-pulse"
+              className="w-56 h-20 lg:block md:block hidden animate-pulse"
               src={apexblacklogo}
               alt=""
             />
