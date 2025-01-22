@@ -1,6 +1,6 @@
 import React from "react";
 import signupimg from "../assets/signupimg.jpg";
-import apexblacklogo from "../assets/deapexlogo.png";
+import apexblacklogo from "../assets/apexautologowhite.png";
 import { Input } from "../components/inputs";
 
 const Signup = () => {
