@@ -1,3 +1,30 @@
+/* .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 16px;
+}
+
+.swiper-slide {
+  transition: transform 0.4s ease-in-out;
+} */
+
+/* Hide default scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -5,4 +32,45 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Style for swiper navigation buttons */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000;
+  font-size: 20px; /* Increased size */
+  width: 20px; /* Adjusted width */
+  height: 20px; /* Adjusted height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.2); /* Darker background on hover */
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4); /* Enhance shadow on hover */
+}
+
+/* Custom icons (for navigation buttons) */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 10px; /* Increased icon size */
+  color: #000; /* White color for icons */
+}
+
+/* Optional: Center icons vertically */
+.swiper-button-next,
+.swiper-button-prev {
+  top: 80%;
+  transform: translateY(250%);
+}
+
+/* Custom slide transition */
+.swiper-slide {
+  transition: transform 0.4s ease-in-out;
 }

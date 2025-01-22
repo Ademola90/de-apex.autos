@@ -4,14 +4,75 @@ import { Buttons } from "../buttons";
 import { useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
+import { FaCircleUser } from "react-icons/fa6";
+import useStore from "../../data/store/store";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useStore();
   const navigate = useNavigate();
 
+  const UserDropdown = () => (
+    <Menu as="div" className="relative inline-block text-left">
+      <MenuButton>
+        <FaCircleUser className="text-2xl text-mainBlue cursor-pointer" />
+      </MenuButton>
+      <MenuItems className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+        <MenuItem>
+          {({ active }) => (
+            <button
+              className={`block px-4 py-2 text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Account Settings
+            </button>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              className={`block px-4 py-2 text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Support
+            </button>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              className={`block px-4 py-2 text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              License
+            </button>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              onClick={() => {
+                logout(); // Clear user state
+                navigate("/"); // Optionally navigate to the homepage
+              }}
+              className={`block w-full px-4 py-2 text-left text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Sign Out
+            </button>
+          )}
+        </MenuItem>
+      </MenuItems>
+    </Menu>
+  );
+
   return (
-    <nav className="bg-whiteColor shadow-md fixed top-0 right-0 left-0 z-40 ">
-      {/* Navbar Container */}
+    <nav className="bg-whiteColor shadow-md fixed top-0 right-0 left-0 z-40">
       <div className="flex items-center justify-between lg:px-16 md:px-10 px-8 py-4">
         {/* Logo */}
         <div>
@@ -20,35 +81,37 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex items-center gap-8 text-[#535551]">
-          <li className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer">
-            Home
-          </li>
-          <li className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer">
-            About
-          </li>
-          <li className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer">
-            Services
-          </li>
-          <li className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer">
-            Contact
-          </li>
+          {["Home", "About", "Services", "Contact"].map((item) => (
+            <li
+              key={item}
+              className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
+            >
+              {item}
+            </li>
+          ))}
         </ul>
 
         {/* Desktop Buttons */}
         <div className="hidden md:flex items-center">
-          <Buttons
-            onClick={() => navigate("/signup")}
-            text="Register"
-            css="Poppins text-base font-semibold text-whiteColor w-28 h-10 bg-mainBlue hover:scale-105 transition duration-300"
-          />
-          <Buttons
-            onClick={() => navigate("/login")}
-            text="Login"
-            css="Poppins text-base font-semibold text-mainBlue w-28 h-10 bg-whiteColor border-mainBlue border-[1px] hover:scale-105 transition duration-300"
-          />
+          {user ? (
+            <UserDropdown />
+          ) : (
+            <>
+              <Buttons
+                onClick={() => navigate("/signup")}
+                text="Register"
+                css="Poppins text-base font-semibold text-whiteColor w-28 h-10 bg-mainBlue hover:scale-105 transition duration-300"
+              />
+              <Buttons
+                onClick={() => navigate("/login")}
+                text="Login"
+                css="Poppins text-base font-semibold text-mainBlue w-28 h-10 bg-whiteColor border-mainBlue border-[1px] hover:scale-105 transition duration-300"
+              />
+            </>
+          )}
         </div>
 
-        {/* Hamburger Menu Icon */}
+        {/* Hamburger Menu */}
         <div
           className="md:hidden text-2xl text-[#535551] cursor-pointer"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -61,48 +124,41 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-whiteColor px-8 pb-4 animate-slideInDown">
           <ul className="flex flex-col gap-4 text-[#535551]">
-            <li
-              className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </li>
-            <li
-              className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </li>
-            <li
-              className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Services
-            </li>
-            <li
-              className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contact
-            </li>
+            {["Home", "About", "Services", "Contact"].map((item) => (
+              <li
+                key={item}
+                className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item}
+              </li>
+            ))}
           </ul>
           <div className="flex flex-col gap-4 mt-4">
-            <Buttons
-              onClick={() => {
-                navigate("/signup");
-                setIsMenuOpen(false);
-              }}
-              text="Register"
-              css="Poppins text-base font-semibold text-whiteColor w-full h-10 bg-mainBlue hover:scale-105 transition duration-300"
-            />
-            <Buttons
-              onClick={() => {
-                navigate("/login");
-                setIsMenuOpen(false);
-              }}
-              text="Login"
-              css="Poppins text-base font-semibold text-mainBlue w-full h-10 bg-whiteColor border-mainBlue border-[1px] hover:scale-105 transition duration-300"
-            />
+            {user ? (
+              <div className="flex justify-center">
+                <UserDropdown />
+              </div>
+            ) : (
+              <>
+                <Buttons
+                  onClick={() => {
+                    navigate("/signup");
+                    setIsMenuOpen(false);
+                  }}
+                  text="Register"
+                  css="Poppins text-base font-semibold text-whiteColor w-full h-10 bg-mainBlue hover:scale-105 transition duration-300"
+                />
+                <Buttons
+                  onClick={() => {
+                    navigate("/login");
+                    setIsMenuOpen(false);
+                  }}
+                  text="Login"
+                  css="Poppins text-base font-semibold text-mainBlue w-full h-10 bg-whiteColor border-mainBlue border-[1px] hover:scale-105 transition duration-300"
+                />
+              </>
+            )}
           </div>
         </div>
       )}
