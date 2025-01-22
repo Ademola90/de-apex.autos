@@ -11,7 +11,7 @@ const Login = () => {
   }, []);
   const navigate = useNavigate();
   return (
-    <div className=" lg:mt-0 md:mt-10 mt-10 ">
+    <div className=" lg:mt-0 md:mt-10 mt-5 ">
       <div className=" flex flex-col md:flex-row items-center justify-center ">
         <div
           className="bg-cover bg-center h-screen lg:w-1/2 md:w-full w-full lg:block md:block hidden"
