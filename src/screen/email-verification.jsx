@@ -41,7 +41,7 @@ const EmailVerification = () => {
   };
 
   return (
-    <div className="lg:mt-0 md:mt-10 mt-10">
+    <div className="lg:mt-0 md:mt-10 mt-20">
       <div className="flex flex-col md:flex-row items-center justify-center">
         {/* Left Section with Background Image */}
         <div
@@ -62,16 +62,16 @@ const EmailVerification = () => {
         {/* Right Section */}
         <div className="lg:w-1/2 md:w-full w-full h-full items-center grid">
           <div className="lg:px-20 md:px-10 px-8">
-            <p className="text-center text-4xl font-Poppins font-bold">
+            <p className="text-center lg:text-4xl md:text-4xl text-3xl font-Poppins font-bold">
               Verify Email Address
             </p>
-            <p className="text-center text-base font-Poppins mt-2">
+            <p className="text-center lg:text-base md:text-sm text-sm font-Poppins mt-2">
               Enter OTP sent to your email
             </p>
 
             {/* OTP Input */}
             <div className=" mt-3">
-              <small className="text-sm font-medium pl-16">OTP</small>
+              <small className="text-sm font-medium lg:pl-16">OTP</small>
               <div
                 className="flex justify-center items-center gap-3 mt-3"
                 onPaste={handlePaste}
@@ -85,7 +85,7 @@ const EmailVerification = () => {
                     onChange={(e) => handleChange(e.target.value, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     ref={(el) => (inputRefs.current[index] = el)}
-                    className="w-12 h-12 text-center border border-gray-300 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-mainBlue focus:border-mainBlue"
+                    className="lg:w-12 md:w-12 w-10 lg:h-12 md:h-12 h-10 text-center border border-gray-300 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-mainBlue focus:border-mainBlue"
                   />
                 ))}
               </div>
