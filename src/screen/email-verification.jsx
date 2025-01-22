@@ -44,7 +44,7 @@ const EmailVerification = () => {
   };
 
   return (
-    <div className="lg:mt-0 md:mt-10 mt-10">
+    <div className="lg:mt-0 md:mt-10 mt-20">
       <div className="flex flex-col md:flex-row items-center justify-center">
         {/* Left Section with Background Image */}
         <div

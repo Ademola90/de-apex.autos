@@ -11,7 +11,7 @@ const Login = () => {
   }, []);
   const navigate = useNavigate();
   return (
-    <div className=" lg:mt-0 md:mt-10 mt-5 ">
+    <div className=" lg:mt-0 md:mt-10 mt-10 ">
       <div className=" flex flex-col md:flex-row items-center justify-center ">
         <div
           className="bg-cover bg-center h-screen lg:w-1/2 md:w-full w-full lg:block md:block hidden"
@@ -27,7 +27,7 @@ const Login = () => {
             />
           </div>
         </div>
-        <div className=" lg:w-1/2 md:w-full w-full h-full items-center grid">
+        <div className=" lg:w-1/2 md:w-full w-full h-full lg:items-center md:items-center grid">
           <div className=" lg:px-20 md:px-10 px-8">
             <p className=" text-center text-4xl font-Poppins font-bold">
               Login
