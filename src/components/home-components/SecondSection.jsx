@@ -32,7 +32,7 @@ const HomeSecondSection = () => {
           </div>
         </div>
         <div>
-          <img className=" h-full" src={imgtwo} alt="" />
+          <img className=" lg:h-full md:h-full h-32" src={imgtwo} alt="" />
         </div>
         <div
           className=" bg-cover bg-center  "
@@ -57,7 +57,7 @@ const HomeSecondSection = () => {
           </div>
         </div>
         <div>
-          <img className=" h-full" src={imgthree} alt="" />
+          <img className="lg:h-full md:h-full h-32" src={imgthree} alt="" />
         </div>
       </div>
     </div>
