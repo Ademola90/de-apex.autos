@@ -6,7 +6,7 @@ import { FaInstagram, FaInstagramSquare, FaTiktok } from "react-icons/fa";
 const Hero = () => {
   return (
     <div
-      className="bg-cover bg-center lg:pl-28 lg:pr-0 md:pl-10 md:pr-10 pl-8 pr-8 lg:mt-16  py-10 "
+      className="bg-cover bg-center lg:pl-28 lg:pr-0 md:pl-10 md:pr-10 pl-8 pr-8 lg:mt-16 md:mt-16 mt-14  py-10 "
       style={{
         backgroundImage: `url(${herobg})`, // Inline style for the dynamic background
       }}
