@@ -10,7 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="bg-whiteColor shadow-md">
+    <nav className="bg-whiteColor shadow-md fixed top-0 right-0 left-0 z-40 ">
       {/* Navbar Container */}
       <div className="flex items-center justify-between lg:px-16 md:px-10 px-8 py-4">
         {/* Logo */}

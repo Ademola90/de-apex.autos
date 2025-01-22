@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/deapexlogo.png";
+import logo from "../../assets/apexautologowhite.png";
 import { FaTiktok } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 
