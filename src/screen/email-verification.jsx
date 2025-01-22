@@ -1,10 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import emailimg from "../assets/signupimg.jpg";
 import apexblacklogo from "../assets/apexautologowhite.png";
 import { Buttons } from "../components/buttons";
 import { useNavigate } from "react-router-dom";
 
 const EmailVerification = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);

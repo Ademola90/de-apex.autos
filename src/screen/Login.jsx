@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import loginimg from "../assets/signupimg.jpg";
 import apexblacklogo from "../assets/apexautologowhite.png";
 import { Input } from "../components/inputs";
@@ -6,6 +6,9 @@ import { Buttons } from "../components/buttons";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
   return (
     <div className=" lg:mt-0 md:mt-10 mt-10 ">
