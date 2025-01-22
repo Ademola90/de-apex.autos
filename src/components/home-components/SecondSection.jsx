@@ -33,7 +33,7 @@ const HomeSecondSection = () => {
         </div>
         <div>
           <img
-            className=" lg:h-full md:h-full h-44 w-full"
+            className=" lg:h-full md:h-full h-64 w-full"
             src={imgtwo}
             alt=""
           />
@@ -62,7 +62,7 @@ const HomeSecondSection = () => {
         </div>
         <div>
           <img
-            className="lg:h-full md:h-full h-44 w-full"
+            className="lg:h-full md:h-full h-64 w-full"
             src={imgthree}
             alt=""
           />
