@@ -6,7 +6,7 @@ import { FaInstagram, FaInstagramSquare, FaTiktok } from "react-icons/fa";
 const Hero = () => {
   return (
     <div
-      className="bg-cover bg-center lg:pl-28 lg:pr-0 md:pl-10 md:pr-10 pl-8 pr-8  py-10 "
+      className="bg-cover bg-center lg:pl-28 lg:pr-0 md:pl-10 md:pr-10 pl-8 pr-8 lg:mt-16  py-10 "
       style={{
         backgroundImage: `url(${herobg})`, // Inline style for the dynamic background
       }}
@@ -42,10 +42,10 @@ const Hero = () => {
         </p>
         <div className=" flex gap-2 items-center">
           <a href="https://www.tiktok.com/@de_apex.autos?_t=ZM-8tFk5E9PSU9&_r=1">
-            <FaTiktok className=" text-whiteColor" />
+            <FaTiktok className=" lg:text-black md:text-black text-whiteColor" />
           </a>
           <a href="https://www.instagram.com/de_apexautos?igsh=cXN6MWdoeXNsdXN2&utm_source=qr">
-            <FaInstagramSquare className=" text-whiteColor" />
+            <FaInstagramSquare className=" lg:text-black md:text-black text-whiteColor" />
           </a>
         </div>
       </div>

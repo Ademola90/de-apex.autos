@@ -60,6 +60,11 @@ const Login = () => {
                 Uppercase, number and more than eight{" "}
               </p>
             </div>
+            <div className=" flex justify-end">
+              <p className=" text-base font-Poppins text-mainBlue mt-2 cursor-pointer">
+                Forgot Password?
+              </p>
+            </div>
 
             <div className=" justify-center flex items-center ">
               <Buttons
@@ -75,7 +80,7 @@ const Login = () => {
                 Don't Have An Account?
               </p>
               <p
-                onClick={() => navigate("/login")}
+                onClick={() => navigate("/signup")}
                 className=" text-mainBlue font-Poppins text-base cursor-pointer"
               >
                 Sign Up
