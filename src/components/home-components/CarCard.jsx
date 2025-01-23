@@ -48,7 +48,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           </button>
           <button
             className="text-whiteColor font-Poppins px-4 py-2 bg-mainBlue"
-            onClick={() => navigate("/check")}
+            onClick={() => navigate("/login")}
           >
             Proceed
           </button>
@@ -86,7 +86,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 2,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
@@ -102,7 +102,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 3,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
@@ -118,7 +118,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 4,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
@@ -134,7 +134,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 5,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
@@ -150,7 +150,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 6,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
@@ -166,7 +166,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 7,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
@@ -182,7 +182,7 @@ const CarCard = () => {
       type: "Sport",
     },
     {
-      id: 1,
+      id: 8,
       image: imgone,
       imagetwo: imgone,
       imagethree: imgone,
