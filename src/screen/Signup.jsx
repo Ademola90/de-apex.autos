@@ -90,7 +90,7 @@ const Signup = () => {
 
             <div className=" justify-center flex items-center ">
               <Buttons
-                onClick={() => navigate("/email-verifivation")}
+                onClick={() => navigate("/email-verification")}
                 css={
                   "bg-mainBlue text-whiteColor font-Poppins text-base font-normal px-4 py-2 mt-5 hover:scale-105 ease-in duration-300 "
                 }
