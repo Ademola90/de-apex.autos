@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white p-6 rounded shadow-lg max-w-md w-full h-[400px] overflow-y-scroll"
+        className="bg-white p-6 rounded shadow-lg max-w-md w-full h-auto max-h-[400px] overflow-y-auto"
       >
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         <div className="mb-4">{children}</div>
@@ -48,11 +48,30 @@ const Modal = ({ isOpen, onClose, title, children }) => {
           </button>
           <button
             className="text-whiteColor font-Poppins px-4 py-2 bg-mainBlue"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/check")}
           >
             Proceed
           </button>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const LoginPromptCard = ({ onLogin, onClose }) => {
+  return (
+    <div
+      onClick={onClose}
+      className=" justify-center cursor-pointer w-full h-full flex items-center fixed left-0 bg-opacity-45 top-0 bg-black"
+    >
+      <div className="border z-40 relative p-4 shadow-md bg-white rounded max-w-sm mx-auto">
+        <h3 className="text-lg font-semibold mb-2">Login Required</h3>
+        <p className="mb-4">
+          Please log in to proceed.
+          <button onClick={onLogin} className="text-mainBlue underline ml-1">
+            Login
+          </button>
+        </p>
       </div>
     </div>
   );
@@ -67,6 +86,7 @@ const CarCard = () => {
   const navigate = useNavigate();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const cars = [
     {
@@ -214,8 +234,7 @@ const CarCard = () => {
     if (user) {
       navigate("/check");
     } else {
-      setModalOpen(true);
-      setSelectedCar(null);
+      setShowLoginPrompt(true); // Show the login prompt card
     }
   };
 
@@ -224,12 +243,27 @@ const CarCard = () => {
       setSelectedCar(car);
       setModalOpen(true);
     } else {
-      alert("Please log in to view car details.");
+      setShowLoginPrompt(true); // Show the login prompt card
     }
   };
 
+  useEffect(() => {
+    // Ensure Swiper can find the custom navigation buttons
+    const swiper = document.querySelector(".swiper");
+    if (swiper) {
+      swiper.swiper.update();
+    }
+  }, []);
+
   return (
     <div className="lg:px-16 md:px-10 px-8 mt-10">
+      {showLoginPrompt && (
+        <LoginPromptCard
+          onClose={() => setShowLoginPrompt(false)}
+          onLogin={() => navigate("/login")}
+        />
+      )}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {cars.map((car) => (
           <div
@@ -298,38 +332,63 @@ const CarCard = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        title={selectedCar ? "Car Images" : "Buy Car"}
+        title={selectedCar ? "Car Images" : "Login Required"}
       >
-        {selectedCar ? (
-          <div>
-            <Swiper
-              modules={[Navigation, Pagination]}
-              pagination={{ clickable: true }}
-              navigation
-              className="w-full h-64"
-            >
-              {Object.keys(selectedCar)
-                .filter((key) => key.startsWith("image"))
-                .map((key, index) => (
-                  <SwiperSlide key={index}>
-                    <img
-                      src={selectedCar[key]}
-                      alt={`${selectedCar.name} ${key}`}
-                      className="w-full h-full object-cover rounded"
-                    />
-                  </SwiperSlide>
-                ))}
-            </Swiper>
+        {user ? (
+          selectedCar ? (
+            <div>
+              <Swiper
+                modules={[Navigation, Pagination]}
+                pagination={{ clickable: true }}
+                navigation={{
+                  prevEl: ".custom-prev",
+                  nextEl: ".custom-next",
+                }}
+                className="w-full h-64"
+              >
+                {Object.keys(selectedCar)
+                  .filter((key) => key.startsWith("image"))
+                  .map((key, index) => (
+                    <SwiperSlide key={index}>
+                      <img
+                        src={selectedCar[key]}
+                        alt=""
+                        className="w-full h-full object-cover rounded"
+                      />
+                    </SwiperSlide>
+                  ))}
+              </Swiper>
 
-            <div className="mt-4">
-              <h3 className="text-lg font-bold">{selectedCar.name}</h3>
-              <p>{selectedCar.text}</p>
-              <p>Price: {selectedCar.price}</p>
-              <p>Type: {selectedCar.type}</p>
+              {/* Custom Navigation Buttons */}
+              <div className="flex justify-between mt-4">
+                <button className="custom-prev bg-gray-200 p-2 rounded">
+                  Prev
+                </button>
+                <button className="custom-next bg-gray-200 p-2 rounded">
+                  Next
+                </button>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-lg font-bold">{selectedCar.name}</h3>
+                <p>{selectedCar.text}</p>
+                <p>Price: {selectedCar.price}</p>
+                <p>Type: {selectedCar.type}</p>
+              </div>
             </div>
-          </div>
+          ) : (
+            <p>Proceed to buy car.</p>
+          )
         ) : (
-          <p>Proceed to buy car.</p>
+          <p>
+            Please log in to proceed.{" "}
+            <button
+              onClick={() => navigate("/login")}
+              className="text-mainBlue underline"
+            >
+              Login
+            </button>
+          </p>
         )}
       </Modal>
     </div>
