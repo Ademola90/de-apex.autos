@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white p-6 rounded shadow-lg max-w-md w-full h-auto max-h-[400px] overflow-y-auto"
+        className="bg-white p-6 rounded shadow-lg max-w-md w-full h-auto max-h-[500px] overflow-y-auto"
       >
         <h2 className="text-xl font-semibold mb-4">{title}</h2>
         <div className="mb-4">{children}</div>

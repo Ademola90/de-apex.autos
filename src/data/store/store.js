@@ -9,21 +9,22 @@
 // export default useStore;
 import { create } from "zustand";
 
-// Retrieve user data from localStorage (if available) during initialization
-const storedUser = JSON.parse(localStorage.getItem("user"));
+// Retrieve user data from sessionStorage during initialization
+const storedUser = JSON.parse(sessionStorage.getItem("user"));
 
 const useStore = create((set) => ({
-    user: storedUser || null, // Initially, check localStorage for user data
+    user: storedUser || null,
     login: (userData) => {
-        // Save user data to localStorage
-        localStorage.setItem("user", JSON.stringify(userData));
+        // Save user data to sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(userData));
         set({ user: userData });
     },
     logout: () => {
-        // Remove user data from localStorage
-        localStorage.removeItem("user");
+        // Remove user data from sessionStorage
+        sessionStorage.removeItem("user");
         set({ user: null });
     },
 }));
 
 export default useStore;
+
