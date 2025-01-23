@@ -62,9 +62,9 @@ const LoginPromptCard = ({ onLogin, onClose }) => {
   return (
     <div
       onClick={onClose}
-      className=" justify-center cursor-pointer w-full h-full flex items-center fixed left-0 bg-opacity-45 top-0 bg-black"
+      className=" justify-center z-40 cursor-pointer w-full h-full flex items-center fixed left-0 bg-opacity-45 top-0 bg-black"
     >
-      <div className="border z-40 relative p-4 shadow-md bg-white rounded max-w-sm mx-auto">
+      <div className="border  relative p-4 shadow-md bg-white rounded max-w-sm mx-auto">
         <h3 className="text-lg font-semibold mb-2">Login Required</h3>
         <p className="mb-4">
           Please log in to proceed.
@@ -269,7 +269,7 @@ const CarCard = () => {
           <div
             key={car.id}
             onClick={() => handleViewDetails(car)}
-            className="border shadow-md flex py-3 flex-col items-center hover:scale-105 hover:ease-in duration-300 cursor-pointer"
+            className="border z-10  shadow-md flex py-3 flex-col items-center hover:scale-105 hover:ease-in duration-300 cursor-pointer"
           >
             <img
               src={car.image}
