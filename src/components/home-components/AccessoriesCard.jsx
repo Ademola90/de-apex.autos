@@ -8,7 +8,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import useStore from "../../data/store/store";
-import imgone from "../../assets/imgone.png";
+import imgone from "../../assets/imgtwo.png";
 import "../../style/style.css";
 
 const useLocalStorageState = (key, initialValue) => {
@@ -263,7 +263,14 @@ const CarAccessoriesCard = () => {
           onLogin={() => navigate("/login")}
         />
       )}
-
+      <div className=" py-10">
+        <p className="text-textBlue font-Poppins lg:text-xl md:text-xl text-lg font-medium text-center ">
+          Find Your Car Accessories
+        </p>
+        <h2 className="text-center font-Poppinsr lg:text-4xl md:text-4xl text-3xl font-bold mt-3">
+          Experience the Best Cars Accessories
+        </h2>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {accessories.map((car) => (
           <div

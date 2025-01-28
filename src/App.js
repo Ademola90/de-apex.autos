@@ -1,27 +1,29 @@
-import React, { Suspense, lazy, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "../src/style/style.css";
-import useStore from "./data/store/store";
+import React, { Suspense, lazy, useEffect } from "react"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import "../src/style/style.css"
+import useStore from "./data/store/store"
+import CarManagement from "./admin/pages/car-management"
 
-const AboutPage = lazy(() => import("./screen/about/about-page"));
-const LandingPage = lazy(() => import("./screen/landing-page"));
-const Signup = lazy(() => import("./screen/Signup"));
-const Login = lazy(() => import("./screen/Login"));
-const EmailVerification = lazy(() => import("./screen/email-verification"));
-const AdminLayout = lazy(() => import("./admin/AdminLayout"));
-const DashboardPage = lazy(() => import("./admin/pages/admin-dashboard"));
-const SettingsPage = lazy(() => import("./admin/pages/settings-page"));
+const AboutPage = lazy(() => import("./screen/about/about-page"))
+const LandingPage = lazy(() => import("./screen/landing-page"))
+const Signup = lazy(() => import("./screen/Signup"))
+const Login = lazy(() => import("./screen/Login"))
+const EmailVerification = lazy(() => import("./screen/email-verification"))
+const AdminLayout = lazy(() => import("./admin/AdminLayout"))
+const DashboardPage = lazy(() => import("./admin/pages/admin-dashboard"))
+const SettingsPage = lazy(() => import("./admin/pages/settings-page"))
 
 function App() {
-  const { login, logout } = useStore(); // Use 'login' instead of 'setUser'
+  const { login, logout } = useStore()
 
-  // Restore user session on page reload
   useEffect(() => {
-    const userData = sessionStorage.getItem("user");
+    const userData = sessionStorage.getItem("user")
     if (userData) {
-      login(JSON.parse(userData)); // Use 'login' to set user data
+      login(JSON.parse(userData))
     }
-  }, [login]);
+  }, [login])
 
   return (
     <div>
@@ -36,15 +38,72 @@ function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="car-management" element={<CarManagement />} />
             </Route>
           </Routes>
         </Suspense>
       </BrowserRouter>
+      <ToastContainer />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
+
+
+
+
+
+
+// import React, { Suspense, lazy, useEffect } from "react";
+// import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import "../src/style/style.css";
+// import useStore from "./data/store/store";
+// import CarManagement from "./admin/pages/car-management";
+
+// const AboutPage = lazy(() => import("./screen/about/about-page"));
+// const LandingPage = lazy(() => import("./screen/landing-page"));
+// const Signup = lazy(() => import("./screen/Signup"));
+// const Login = lazy(() => import("./screen/Login"));
+// const EmailVerification = lazy(() => import("./screen/email-verification"));
+// const AdminLayout = lazy(() => import("./admin/AdminLayout"));
+// const DashboardPage = lazy(() => import("./admin/pages/admin-dashboard"));
+// const SettingsPage = lazy(() => import("./admin/pages/settings-page"));
+
+// function App() {
+//   const { login, logout } = useStore(); // Use 'login' instead of 'setUser'
+
+//   // Restore user session on page reload
+//   useEffect(() => {
+//     const userData = sessionStorage.getItem("user");
+//     if (userData) {
+//       login(JSON.parse(userData)); // Use 'login' to set user data
+//     }
+//   }, [login]);
+
+//   return (
+//     <div>
+//       <BrowserRouter>
+//         <Suspense fallback={<div>Loading...</div>}>
+//           <Routes>
+//             <Route path="/" element={<LandingPage />} />
+//             <Route path="/about/about-page" element={<AboutPage />} />
+//             <Route path="/signup" element={<Signup />} />
+//             <Route path="/login" element={<Login />} />
+//             <Route path="/email-verification" element={<EmailVerification />} />
+//             <Route path="/admin" element={<AdminLayout />}>
+//               <Route path="dashboard" element={<DashboardPage />} />
+//               <Route path="settings" element={<SettingsPage />} />
+//               <Route path="car-management" element={<CarManagement />} />
+//             </Route>
+//           </Routes>
+//         </Suspense>
+//       </BrowserRouter>
+//     </div>
+//   );
+// }
+
+// export default App;
 
 
 

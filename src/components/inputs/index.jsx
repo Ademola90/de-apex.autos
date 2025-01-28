@@ -1,11 +1,23 @@
 import React from "react";
 import { FaArrowDown } from "react-icons/fa";
 
-export const Input = ({ placeholder, css }) => {
+export const Input = ({
+  name,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  css,
+}) => {
   return (
-    <div>
-      <input className={`${css}`} placeholder={placeholder} type="text" />
-    </div>
+    <input
+      name={name}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      type={type}
+      className={css}
+    />
   );
 };
 
