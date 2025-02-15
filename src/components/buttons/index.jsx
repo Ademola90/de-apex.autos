@@ -1,3 +1,4 @@
+//components/buttos/index.jsx
 import React from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { ImPriceTag } from "react-icons/im";

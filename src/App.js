@@ -1,3 +1,4 @@
+// src/app.js
 import React, { Suspense, lazy, useEffect } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ToastContainer } from "react-toastify"
@@ -5,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css"
 import "../src/style/style.css"
 import useStore from "./data/store/store"
 import CarManagement from "./admin/pages/car-management"
+import AddCar from "./admin/pages/add-car"
+import AdminCreation from "./admin/pages/AdminCreation"
+
 
 const AboutPage = lazy(() => import("./screen/about/about-page"))
 const LandingPage = lazy(() => import("./screen/landing-page"))
@@ -17,6 +21,16 @@ const SettingsPage = lazy(() => import("./admin/pages/settings-page"))
 
 function App() {
   const { login, logout } = useStore()
+
+  useEffect(() => {
+    const userData = sessionStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (userData && token && refreshToken) {
+      login(JSON.parse(userData), { accessToken: token, refreshToken });
+    }
+  }, [login]);
 
   useEffect(() => {
     const userData = sessionStorage.getItem("user")
@@ -35,10 +49,13 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/email-verification" element={<EmailVerification />} />
+            <Route path="/create-admin" element={<AdminCreation />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="car-management" element={<CarManagement />} />
+              <Route path="add-car" element={<AddCar />} />
+
             </Route>
           </Routes>
         </Suspense>

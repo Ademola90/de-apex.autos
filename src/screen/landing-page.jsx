@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+// screen/landin-page.jsx
+
+import React, { useEffect, useState } from "react";
 import Hero from "../components/home-components/Hero";
 import HomeSecondSection from "../components/home-components/SecondSection";
 import CarSlider from "../components/home-components/CarSlider";
@@ -9,9 +11,6 @@ import Footer from "../components/footer/footer";
 import Navbar from "../components/navbar/navbar";
 
 const LandingPage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <div className="">
       <Navbar />

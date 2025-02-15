@@ -1,3 +1,4 @@
+//component/home-components/
 import React, { useState, useEffect, useRef } from "react";
 import { IoHeart, IoArrowBack, IoArrowForward } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";

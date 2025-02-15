@@ -1,39 +1,54 @@
 // screen/Login.jsx
 
-import React, { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import loginimg from "../assets/signupimg.jpg"
-import apexblacklogo from "../assets/apexautologowhite.png"
-import { Input } from "../components/inputs"
-import { Buttons } from "../components/buttons"
-import useStore from "../data/store/store"
-import api from "../utils/api"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import loginimg from "../assets/signupimg.jpg";
+import apexblacklogo from "../assets/apexautologowhite.png";
+import { Input } from "../components/inputs";
+import { Buttons } from "../components/buttons";
+import useStore from "../data/store/store";
+import api from "../utils/api";
 
 const Login = () => {
-  const { login } = useStore()
-  const navigate = useNavigate()
-  const [credentials, setCredentials] = useState({ email: "", password: "" })
+  const { login } = useStore();
+  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value })
-  }
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+  };
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setIsLoading(true);
     try {
-      const response = await api.post("/auth/login", credentials)
-      login({ ...response.data.user, token: response.data.token })
-      toast.success("Login successful")
-      navigate("/")
+      const response = await api.post("/auth/login", credentials);
+      const { user, token } = response.data;
+      // Store the token in localStorage
+      localStorage.setItem("token", token);
+      console.log("Token stored:", token);
+      login({ ...user, token });
+      toast.success("Login successful");
+
+      // Navigate based on role
+      if (user.role === "superadmin" || user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed")
+      console.error("Login error:", error);
+      toast.error(error.response?.data?.message || "Login failed");
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="lg:mt-0 md:mt-10 mt-10">
@@ -45,7 +60,11 @@ const Login = () => {
           }}
         >
           <div className="bg-black bg-opacity-55 flex items-center h-full justify-center">
-            <img className="w-56 h-20 animate-pulse" src={apexblacklogo || "/placeholder.svg"} alt="" />
+            <img
+              className="w-56 h-20 animate-pulse"
+              src={apexblacklogo || "/placeholder.svg"}
+              alt="Apex Auto Logo"
+            />
           </div>
         </div>
 
@@ -54,7 +73,10 @@ const Login = () => {
             <p className="text-center text-4xl font-Poppins font-bold">Login</p>
             <form onSubmit={handleLogin}>
               <div className="grid mt-5">
-                <label className="font-Poppins text-base text-blackColor" htmlFor="email">
+                <label
+                  className="font-Poppins text-base text-blackColor"
+                  htmlFor="email"
+                >
                   Email
                 </label>
                 <Input
@@ -68,7 +90,10 @@ const Login = () => {
                 />
               </div>
               <div className="grid mt-5">
-                <label className="font-Poppins text-base text-blackColor" htmlFor="password">
+                <label
+                  className="font-Poppins text-base text-blackColor"
+                  htmlFor="password"
+                >
                   Password
                 </label>
                 <Input
@@ -86,13 +111,19 @@ const Login = () => {
                 <Buttons
                   type="submit"
                   css="bg-mainBlue text-whiteColor font-Poppins text-base font-normal px-4 py-2 mt-5 hover:scale-105 ease-in duration-300"
-                  text="Login"
+                  text={isLoading ? "Logging in..." : "Login"}
+                  disabled={isLoading}
                 />
               </div>
             </form>
             <div className="flex items-center gap-2 mt-5">
-              <p className="text-base text-blackColor font-Poppins">Don't Have An Account?</p>
-              <p onClick={() => navigate("/signup")} className="text-mainBlue font-Poppins text-base cursor-pointer">
+              <p className="text-base text-blackColor font-Poppins">
+                Don't Have An Account?
+              </p>
+              <p
+                onClick={() => navigate("/signup")}
+                className="text-mainBlue font-Poppins text-base cursor-pointer"
+              >
                 Sign Up
               </p>
             </div>
@@ -100,22 +131,244 @@ const Login = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
 
+// import React, { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { toast } from "react-toastify";
+// import loginimg from "../assets/signupimg.jpg";
+// import apexblacklogo from "../assets/apexautologowhite.png";
+// import { Input } from "../components/inputs";
+// import { Buttons } from "../components/buttons";
+// import useStore from "../data/store/store";
+// import api from "../utils/api";
 
+// const Login = () => {
+//   const { login } = useStore();
+//   const navigate = useNavigate();
+//   const [credentials, setCredentials] = useState({ email: "", password: "" });
 
+//   useEffect(() => {
+//     window.scrollTo(0, 0);
+//   }, []);
 
+//   const handleChange = (e) => {
+//     setCredentials({ ...credentials, [e.target.name]: e.target.value });
+//   };
 
+//   const handleLogin = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await api.post("/auth/login", credentials);
+//       login({ ...response.data.user, token: response.data.token });
+//       toast.success("Login successful");
 
+//       // Navigate based on role
+//       const userRole = response.data.user.role;
+//       if (userRole === "super_admin") {
+//         navigate("/admin/dashboard");
+//       } else if (userRole === "admin") {
+//         navigate("/admin/dashboard");
+//       } else {
+//         navigate("/");
+//       }
+//     } catch (error) {
+//       toast.error(error.response?.data?.message || "Login failed");
+//     }
+//   };
 
+//   return (
+//     <div className="lg:mt-0 md:mt-10 mt-10">
+//       <div className="flex flex-col md:flex-row items-center justify-center">
+//         <div
+//           className="bg-cover bg-center h-screen lg:w-1/2 md:w-full w-full lg:block md:block hidden"
+//           style={{
+//             backgroundImage: `url(${loginimg})`,
+//           }}
+//         >
+//           <div className="bg-black bg-opacity-55 flex items-center h-full justify-center">
+//             <img
+//               className="w-56 h-20 animate-pulse"
+//               src={apexblacklogo || "/placeholder.svg"}
+//               alt=""
+//             />
+//           </div>
+//         </div>
 
+//         <div className="lg:w-1/2 md:w-full w-full h-full grid">
+//           <div className="lg:px-20 md:px-10 px-8">
+//             <p className="text-center text-4xl font-Poppins font-bold">Login</p>
+//             <form onSubmit={handleLogin}>
+//               <div className="grid mt-5">
+//                 <label
+//                   className="font-Poppins text-base text-blackColor"
+//                   htmlFor="email"
+//                 >
+//                   Email
+//                 </label>
+//                 <Input
+//                   name="email"
+//                   type="email"
+//                   placeholder="Enter your email address"
+//                   value={credentials.email}
+//                   onChange={handleChange}
+//                   css="border border-mainBlue h-[40px] w-full mt-1 px-2"
+//                   required
+//                 />
+//               </div>
+//               <div className="grid mt-5">
+//                 <label
+//                   className="font-Poppins text-base text-blackColor"
+//                   htmlFor="password"
+//                 >
+//                   Password
+//                 </label>
+//                 <Input
+//                   name="password"
+//                   type="password"
+//                   placeholder="Enter password"
+//                   value={credentials.password}
+//                   onChange={handleChange}
+//                   css="border border-mainBlue h-[40px] w-full mt-1 px-2"
+//                   required
+//                 />
+//               </div>
 
+//               <div className="justify-center flex items-center">
+//                 <Buttons
+//                   type="submit"
+//                   css="bg-mainBlue text-whiteColor font-Poppins text-base font-normal px-4 py-2 mt-5 hover:scale-105 ease-in duration-300"
+//                   text="Login"
+//                 />
+//               </div>
+//             </form>
+//             <div className="flex items-center gap-2 mt-5">
+//               <p className="text-base text-blackColor font-Poppins">
+//                 Don't Have An Account?
+//               </p>
+//               <p
+//                 onClick={() => navigate("/signup")}
+//                 className="text-mainBlue font-Poppins text-base cursor-pointer"
+//               >
+//                 Sign Up
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
 
+// export default Login;
 
+// import React, { useState, useEffect } from "react"
+// import { useNavigate } from "react-router-dom"
+// import { toast } from "react-toastify"
+// import loginimg from "../assets/signupimg.jpg"
+// import apexblacklogo from "../assets/apexautologowhite.png"
+// import { Input } from "../components/inputs"
+// import { Buttons } from "../components/buttons"
+// import useStore from "../data/store/store"
+// import api from "../utils/api"
 
+// const Login = () => {
+//   const { login } = useStore()
+//   const navigate = useNavigate()
+//   const [credentials, setCredentials] = useState({ email: "", password: "" })
+
+//   useEffect(() => {
+//     window.scrollTo(0, 0)
+//   }, [])
+
+//   const handleChange = (e) => {
+//     setCredentials({ ...credentials, [e.target.name]: e.target.value })
+//   }
+
+//   const handleLogin = async (e) => {
+//     e.preventDefault()
+//     try {
+//       const response = await api.post("/auth/login", credentials)
+//       login({ ...response.data.user, token: response.data.token })
+//       toast.success("Login successful")
+//       navigate("/")
+//     } catch (error) {
+//       toast.error(error.response?.data?.message || "Login failed")
+//     }
+//   }
+
+//   return (
+//     <div className="lg:mt-0 md:mt-10 mt-10">
+//       <div className="flex flex-col md:flex-row items-center justify-center">
+//         <div
+//           className="bg-cover bg-center h-screen lg:w-1/2 md:w-full w-full lg:block md:block hidden"
+//           style={{
+//             backgroundImage: `url(${loginimg})`,
+//           }}
+//         >
+//           <div className="bg-black bg-opacity-55 flex items-center h-full justify-center">
+//             <img className="w-56 h-20 animate-pulse" src={apexblacklogo || "/placeholder.svg"} alt="" />
+//           </div>
+//         </div>
+
+//         <div className="lg:w-1/2 md:w-full w-full h-full grid">
+//           <div className="lg:px-20 md:px-10 px-8">
+//             <p className="text-center text-4xl font-Poppins font-bold">Login</p>
+//             <form onSubmit={handleLogin}>
+//               <div className="grid mt-5">
+//                 <label className="font-Poppins text-base text-blackColor" htmlFor="email">
+//                   Email
+//                 </label>
+//                 <Input
+//                   name="email"
+//                   type="email"
+//                   placeholder="Enter your email address"
+//                   value={credentials.email}
+//                   onChange={handleChange}
+//                   css="border border-mainBlue h-[40px] w-full mt-1 px-2"
+//                   required
+//                 />
+//               </div>
+//               <div className="grid mt-5">
+//                 <label className="font-Poppins text-base text-blackColor" htmlFor="password">
+//                   Password
+//                 </label>
+//                 <Input
+//                   name="password"
+//                   type="password"
+//                   placeholder="Enter password"
+//                   value={credentials.password}
+//                   onChange={handleChange}
+//                   css="border border-mainBlue h-[40px] w-full mt-1 px-2"
+//                   required
+//                 />
+//               </div>
+
+//               <div className="justify-center flex items-center">
+//                 <Buttons
+//                   type="submit"
+//                   css="bg-mainBlue text-whiteColor font-Poppins text-base font-normal px-4 py-2 mt-5 hover:scale-105 ease-in duration-300"
+//                   text="Login"
+//                 />
+//               </div>
+//             </form>
+//             <div className="flex items-center gap-2 mt-5">
+//               <p className="text-base text-blackColor font-Poppins">Don't Have An Account?</p>
+//               <p onClick={() => navigate("/signup")} className="text-mainBlue font-Poppins text-base cursor-pointer">
+//                 Sign Up
+//               </p>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default Login
 
 // import React, { useEffect } from "react";
 // import loginimg from "../assets/signupimg.jpg";

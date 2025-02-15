@@ -1,3 +1,4 @@
+//components/inputs/index.jsx
 import React from "react";
 import { FaArrowDown } from "react-icons/fa";
 

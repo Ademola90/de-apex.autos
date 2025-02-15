@@ -1,3 +1,5 @@
+//admin/components/RecentSales.jsx
+
 import React from "react";
 
 const RecentSales = () => {

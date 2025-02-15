@@ -1,3 +1,5 @@
+//components/nabbar/nabvar.jsx
+
 import React, { useState } from "react";
 import deapexlogoblack from "../../assets/deapexlogoblack.png";
 import { Buttons } from "../buttons";

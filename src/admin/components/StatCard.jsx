@@ -1,3 +1,5 @@
+//admin/components/StatCard.jsx
+
 import React from "react";
 
 const StatCard = ({ title, value, icon }) => {
