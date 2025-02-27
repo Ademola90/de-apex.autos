@@ -49,41 +49,32 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const originalRequest = error.config;
+    if (error.response?.status === 401) {
+      const originalRequest = error.config;
+      if (!originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const refreshToken = localStorage.getItem('refreshToken');
+          if (!refreshToken) throw new Error('No refresh token');
 
-    // Check if the error is due to an expired or invalid token
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+          const { data } = await axios.post(
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
+            { refreshToken }
+          );
 
-      try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (!refreshToken) throw new Error("Refresh token missing");
+          const newAccessToken = data.accessToken;
+          localStorage.setItem('token', newAccessToken);
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
-        // Call the refresh token endpoint
-        const { data } = await axios.post(
-          "http://localhost:5000/api/auth/refresh-token",
-          // "https://de-apex-autos-backend.onrender.com/api/auth/refresh-token",
-          { refreshToken }
-        );
-
-        const newAccessToken = data.accessToken;
-
-        // Update the access token in localStorage and headers
-        localStorage.setItem("token", newAccessToken);
-        api.defaults.headers.common["Authorization"] = `Bearer ${newAccessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-
-        // Retry the original request with the new token
-        return api(originalRequest);
-      } catch (refreshError) {
-        console.error("Token refresh failed:", refreshError);
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
-        sessionStorage.removeItem("user");
-        window.location.href = "/login"; // Redirect to login
+          return api(originalRequest);
+        } catch (refreshError) {
+          console.error('Failed to refresh token:', refreshError);
+          localStorage.clear();
+          sessionStorage.clear();
+          window.location.href = '/login';
+        }
       }
     }
-
     return Promise.reject(error);
   }
 );
