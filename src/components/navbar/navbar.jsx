@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import deapexlogoblack from "../../assets/deapexlogoblack.png";
 import { Buttons } from "../buttons";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { FaCircleUser } from "react-icons/fa6";
@@ -79,18 +79,42 @@ const Navbar = () => {
         <div>
           <img className="w-32 h-10" src={deapexlogoblack} alt="Logo" />
         </div>
-
-        <ul className="hidden md:flex items-center gap-8 text-[#535551]">
-          {["Home", "About", "Services", "Contact"].map((item) => (
-            <li
-              key={item}
-              className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
+        <ul className=" hidden md:flex items-center gap-8 text-[#535551]">
+          {[
+            { name: "Home", path: "/" },
+            { name: "Vehicles", path: "/cars" },
+            { name: "About", path: "/about/about-page" },
+            { name: "Services", path: "/service/services-page" },
+            { name: "Contact", path: "/contact/contact-page" },
+          ].map((item, index) => (
+            <NavLink
+              key={index}
+              to={item.path}
+              className={({ isActive }) =>
+                `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+                  isActive ? "text-mainBlue" : "text-[#535551]"
+                }`
+              }
             >
-              {item}
-            </li>
+              {item.name}
+            </NavLink>
           ))}
         </ul>
 
+        {/* <ul className="hidden md:flex items-center gap-8 text-[#535551]">
+          {["Home", "About", "Services", "Contact"].map((item) => (
+           <NavLink
+           to={item.path}
+           className={({ isActive }) =>
+             `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+               isActive ? "text-mainBlue" : "text-[#535551]"
+             }`
+           }
+         >
+           {item.name}
+         </NavLink>;
+          ))}
+        </ul> */}
         <div className="hidden md:flex items-center">
           {user ? (
             <UserDropdown />
@@ -109,7 +133,6 @@ const Navbar = () => {
             </>
           )}
         </div>
-
         <div
           className="md:hidden text-2xl text-[#535551] cursor-pointer"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -120,7 +143,27 @@ const Navbar = () => {
 
       {isMenuOpen && (
         <div className="md:hidden bg-white px-8 pb-4 animate-slideInDown">
-          <ul className="flex flex-col gap-4 text-[#535551]">
+          <ul className=" grid items-center gap-8 text-[#535551]">
+            {[
+              { name: "Home", path: "/" },
+              { name: "Vehicles", path: "/cars" },
+              { name: "About", path: "/about/about-page" },
+              { name: "Services", path: "/service/services-page" },
+              { name: "Contact", path: "/contact/contact-page" },
+            ].map((item) => (
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer  ${
+                    isActive ? "text-mainBlue" : "text-[#535551]"
+                  }`
+                }
+              >
+                {item.name}
+              </NavLink>
+            ))}
+          </ul>
+          {/* <ul className="flex flex-col gap-4 text-[#535551]">
             {["Home", "About", "Services", "Contact"].map((item) => (
               <li
                 key={item}
@@ -130,7 +173,7 @@ const Navbar = () => {
                 {item}
               </li>
             ))}
-          </ul>
+          </ul> */}
           <div className="flex flex-col gap-4 mt-4">
             {user ? (
               <UserDropdown />

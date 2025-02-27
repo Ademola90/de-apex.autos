@@ -9,12 +9,15 @@ import { Input } from "../components/inputs";
 import { Buttons } from "../components/buttons";
 import useStore from "../data/store/store";
 import api from "../utils/api";
+import { Eye, EyeOff } from "lucide-react";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const Login = () => {
   const { login } = useStore();
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,6 +51,10 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -96,24 +103,46 @@ const Login = () => {
                 >
                   Password
                 </label>
-                <Input
-                  name="password"
-                  type="password"
-                  placeholder="Enter password"
-                  value={credentials.password}
-                  onChange={handleChange}
-                  css="border border-mainBlue h-[40px] w-full mt-1 px-2"
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    value={credentials.password}
+                    onChange={handleChange}
+                    css="border border-mainBlue h-[40px] w-full mt-1 px-2 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 flex items-center px-2 mt-1"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-500" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-500" />
+                    )}
+                  </button>
+                </div>
               </div>
 
-              <div className="justify-center flex items-center">
+              <div className="justify-between flex items-center">
                 <Buttons
                   type="submit"
                   css="bg-mainBlue text-whiteColor font-Poppins text-base font-normal px-4 py-2 mt-5 hover:scale-105 ease-in duration-300"
                   text={isLoading ? "Logging in..." : "Login"}
                   disabled={isLoading}
                 />
+                <p
+                  onClick={() => navigate("/forgot-password")}
+                  className=" cursor-pointer text-mainBlue"
+                >
+                  Forgot Password
+                </p>
+              </div>
+              <div className=" mt-2">
+                <GoogleLoginButton />
               </div>
             </form>
             <div className="flex items-center gap-2 mt-5">
@@ -126,6 +155,20 @@ const Login = () => {
               >
                 Sign Up
               </p>
+            </div>
+          </div>
+          <div
+            className="bg-cover bg-center h-screen mt-5 lg:w-1/2 md:w-full w-full lg:hidden md:hidden block"
+            style={{
+              backgroundImage: `url(${loginimg})`,
+            }}
+          >
+            <div className="bg-black bg-opacity-55 flex items-center h-full justify-center">
+              <img
+                className="w-56 h-20 animate-pulse"
+                src={apexblacklogo || "/placeholder.svg"}
+                alt="Apex Auto Logo"
+              />
             </div>
           </div>
         </div>

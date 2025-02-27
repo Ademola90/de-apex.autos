@@ -8,6 +8,15 @@ import useStore from "./data/store/store"
 import CarManagement from "./admin/pages/car-management"
 import AddCar from "./admin/pages/add-car"
 import AdminCreation from "./admin/pages/AdminCreation"
+import ForgotPassword from "./screen/forgot-password"
+import Cars from "./screen/cars"
+import Details from "./screen/details"
+import InventoryTable from "./admin/pages/inventory"
+import AccessoriesManagement from "./admin/pages/accessories-management"
+import Accessories from "./screen/accessories"
+import AccessoryDetails from "./screen/accessory-details"
+import ServicesPage from "./screen/services/services-page"
+import ContactPage from "./screen/contact/contact"
 
 
 const AboutPage = lazy(() => import("./screen/about/about-page"))
@@ -46,15 +55,25 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/about/about-page" element={<AboutPage />} />
+            <Route path="/service/services-page" element={<ServicesPage />} />
+            <Route path="/contact/contact-page" element={<ContactPage />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/email-verification" element={<EmailVerification />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/create-admin" element={<AdminCreation />} />
+            <Route path="/cars" element={<Cars />} />
+            <Route path="/details/:carId" element={<Details />} />
+            <Route path="/accessories" element={<Accessories />} />
+            <Route path="/accessory-details/:accessoryId" element={<AccessoryDetails />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="car-management" element={<CarManagement />} />
               <Route path="add-car" element={<AddCar />} />
+              <Route path="inventories" element={<InventoryTable />} />
+              <Route path="accessories-management" element={<AccessoriesManagement />} />
+
 
             </Route>
           </Routes>

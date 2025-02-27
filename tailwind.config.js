@@ -12,7 +12,8 @@ module.exports = {
         textBlue: "#23AAF2"
       },
       fontFamily: {
-        Poppins: ["Poppins", "serif"]
+        Poppins: ["Poppins", "serif"],
+        Outfit: ["Outfit", "serif"],
       }
     },
   },

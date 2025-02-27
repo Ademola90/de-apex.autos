@@ -8,6 +8,7 @@ import apexblacklogo from "../assets/apexautologowhite.png";
 import { Input } from "../components/inputs";
 import { Buttons } from "../components/buttons";
 import instance from "../utils/api";
+import { Eye, EyeOff } from "lucide-react";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,9 @@ const Signup = () => {
     email: "",
     password: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,6 +28,10 @@ const Signup = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -130,15 +138,28 @@ const Signup = () => {
                 >
                   Password
                 </label>
-                <Input
-                  name="password"
-                  type="password"
-                  placeholder="Enter password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  css="border border-mainBlue h-[40px] w-full mt-1 px-2"
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    css="border border-mainBlue h-[40px] w-full mt-1 px-2 pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 flex items-center px-2 mt-1"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5 text-gray-500" />
+                    ) : (
+                      <Eye className="h-5 w-5 text-gray-500" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="justify-center flex items-center">
                 <Buttons

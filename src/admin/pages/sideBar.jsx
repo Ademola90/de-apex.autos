@@ -9,14 +9,20 @@ import {
 } from "lucide-react";
 import logo from "../../assets/apexautologowhite.png";
 import { useNavigate } from "react-router-dom";
+import { FaTools } from "react-icons/fa";
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
   const menuItems = [
     { icon: <Home />, text: "Dashboard", route: "dashboard" },
-    { icon: <ShoppingCart />, text: "Inventory", route: "" },
+    { icon: <ShoppingCart />, text: "Inventory", route: "inventories" },
     { icon: <Car />, text: "Car Management", route: "car-management" },
+    {
+      icon: <FaTools />,
+      text: "Accessories Management",
+      route: "accessories-management",
+    },
     { icon: <Users />, text: "Customers", route: "" },
     { icon: <BarChart2 />, text: "Analytics", route: "" },
     { icon: <Settings />, text: "Settings", route: "settings" },

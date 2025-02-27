@@ -30,7 +30,7 @@ const DashboardPage = () => {
               Welcome {user.role === "superadmin" ? "Super Admin" : "Admin"}
             </h3>
             <div className="mt-4">
-              <div className="flex flex-wrap -mx-6">
+              <div className="w-full lg:grid-cols-4 md:grid-cols-2 justify-between grid-cols-1 grid -mx-6">
                 <StatCard
                   title="Total Cars"
                   value="50"
@@ -42,7 +42,7 @@ const DashboardPage = () => {
                   icon={<DollarSign className="h-6 w-6" />}
                 />
                 <StatCard
-                  title="Total Customers"
+                  title="Customers"
                   value="100"
                   icon={<Users className="h-6 w-6" />}
                 />
@@ -56,12 +56,12 @@ const DashboardPage = () => {
             <div>
               <UserAnalytics />
             </div>
-            <div className="mt-8">
+            {/* <div className="mt-8">
               <CarList />
             </div>
             <div className="mt-8">
               <RecentSales />
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-8 px-6">
