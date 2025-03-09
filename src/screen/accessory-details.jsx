@@ -143,7 +143,10 @@ const AccessoryDetails = () => {
                 {accessory.images && accessory.images.length > 0 ? (
                   accessory.images.map((image, index) => (
                     <SwiperSlide key={index}>
-                      <div className="aspect-w-16 aspect-h-9">
+                      <div
+                        className="relative w-full"
+                        style={{ height: "500px" }}
+                      >
                         <img
                           src={
                             image.startsWith("http")
@@ -151,7 +154,7 @@ const AccessoryDetails = () => {
                               : `${process.env.NEXT_PUBLIC_API_URL}${image}`
                           }
                           alt=""
-                          className="w-full h-[500px] object-cover"
+                          className="w-full h-full object-contain"
                         />
                       </div>
                     </SwiperSlide>
@@ -266,7 +269,7 @@ const AccessoryDetails = () => {
                 <h3 className="text-lg font-semibold text-gray-800 mb-2">
                   Description
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 break-words whitespace-normal overflow-hidden">
                   {accessory.description || "No description available."}
                 </p>
               </div>
