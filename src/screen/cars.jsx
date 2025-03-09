@@ -7,8 +7,13 @@ import useStore from "../data/store/store";
 import api from "../utils/api";
 import Navbar from "../components/navbar/navbar";
 import OthersHero from "../components/OthersHero";
+import Footer from "../components/footer/footer";
 
 const Cars = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -219,6 +224,8 @@ const Cars = () => {
           )}
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import {
   Phone,
@@ -16,6 +16,10 @@ import Footer from "../../components/footer/footer";
 import Navbar from "../../components/navbar/navbar";
 
 const ContactPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -255,8 +259,7 @@ const ContactPage = () => {
                         Main Showroom
                       </h3>
                       <p className="text-gray-600 text-base font-Outfit ">
-                        123 Adetokunbo Ademola Street, Victoria Island, Lagos,
-                        Nigeria
+                        113 Osogbo road, Dagbolu, Osun State, Nigeria
                       </p>
                     </div>
                   </div>
@@ -387,17 +390,17 @@ const ContactPage = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
-                    to="/services"
+                    to="/service/services-page"
                     className="inline-flex items-center font-Outfit justify-center bg-mainBlue hover:bg-blue-600 text-whiteColor font-medium px-6 py-3 rounded-md transition-colors"
                   >
                     <Car className="mr-2 h-5 w-5" /> Explore Our Services
                   </Link>
-                  <a
-                    href="tel:+2348012345678"
+                  {/* <a
+                    href="tel:+2349 0329 76552"
                     className="inline-flex items-center font-Outfit justify-center bg-transparent hover:bg-white/10 border border-white text-white font-medium px-6 py-3 rounded-md transition-colors"
                   >
                     <Phone className="mr-2 h-5 w-5" /> Call Us Now
-                  </a>
+                  </a> */}
                 </div>
               </div>
 

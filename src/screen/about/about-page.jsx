@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Car, Users, History, Award, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import aboutimg from "../../assets/aboutimg.jpg";
@@ -7,6 +7,10 @@ import aboutes from "../../assets/aboutes.jpg";
 import Footer from "../../components/footer/footer";
 
 const AboutPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -23,14 +27,14 @@ const AboutPage = () => {
           </div>
           <div className="relative max-w-7xl mx-auto  sm:px-6 py-24 md:py-32 lg:px-24 md:px-10 px-8">
             <h1 className="text-4xl md:text-5xl font-bold font-Poppins mb-6">
-              About De-apex autos Nigeria
+              About De-apex autos
             </h1>
             <p className="text-xl max-w-2xl mb-8 font-Outfit">
               Your trusted partner for premium automobiles, accessories, and
               rental services across Nigeria.
             </p>
             <Link
-              to="/contact"
+              to="/contact/contact-page"
               className="inline-flex items-center bg-mainBlue font-Outfit hover:bg-blue-950 text-whiteColor font-medium px-6 py-3 rounded-md transition-colors"
             >
               Contact Us <ChevronRight className="ml-2 h-5 w-5" />
@@ -226,13 +230,13 @@ const AboutPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="/services"
+                to="/service/services-page"
                 className="inline-flex items-center justify-center bg-mainBlue hover:bg-blue-800 text-whiteColor font-medium px-6 py-3 rounded-md transition-colors"
               >
                 Explore Our Services
               </Link>
               <Link
-                to="/contact"
+                to="/contact/contact-page"
                 className="inline-flex items-center justify-center bg-transparent hover:bg-white/10 border border-mainBlue text-white font-medium px-6 py-3 rounded-md transition-colors"
               >
                 Contact Us

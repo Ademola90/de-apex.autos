@@ -11,6 +11,10 @@ import Footer from "../components/footer/footer";
 import Navbar from "../components/navbar/navbar";
 
 const LandingPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="">
       <Navbar />

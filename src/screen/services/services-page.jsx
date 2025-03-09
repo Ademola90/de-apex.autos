@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Car,
   PenToolIcon as Tool,
@@ -26,6 +26,10 @@ import carment from "../../assets/carment.jpg";
 import Footer from "../../components/footer/footer";
 
 const ServicesPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -49,7 +53,7 @@ const ServicesPage = () => {
               buying and renting to maintenance and accessories.
             </p>
             <Link
-              to="/contact"
+              to="/contact/contact-page"
               className="inline-flex items-center bg-mainBlue hover:bg-blue-800 text-whiteColor font-Outfit font-medium px-6 py-3 rounded-md transition-colors"
             >
               Book a Service <ChevronRight className="ml-2 h-5 w-5" />
@@ -183,14 +187,14 @@ const ServicesPage = () => {
                 </div>
 
                 <Link
-                  to="/contact"
+                  to="/contact/contact-page"
                   className="inline-flex items-center bg-mainBlue hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-md transition-colors"
                 >
                   View Inventory <ChevronRight className="ml-2 h-5 w-5" />
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-4">
                 <img
                   src={carfour}
                   alt="Luxury sedan"
@@ -200,12 +204,12 @@ const ServicesPage = () => {
                 <img
                   src={carsix}
                   alt="Truck"
-                  className="rounded-lg shadow-md h-[300px] mt-8"
+                  className="rounded-lg shadow-md h-[300px] lg:mt-8 md:mt-8 mt-0"
                 />
                 <img
                   src={carseven}
                   alt="Sports car"
-                  className="rounded-lg shadow-md h-[300px] mt-8"
+                  className="rounded-lg shadow-md h-[300px] lg:mt-8 md:mt-8 mt-0"
                 />
                 <img
                   src={carfive}
@@ -318,7 +322,7 @@ const ServicesPage = () => {
                 </div>
 
                 <Link
-                  to="/contact"
+                  to="/accessories"
                   className="inline-flex items-center bg-mainBlue hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-md transition-colors"
                 >
                   Shop Accessories <ChevronRight className="ml-2 h-5 w-5" />
@@ -393,7 +397,7 @@ const ServicesPage = () => {
                 </div>
 
                 <Link
-                  to="/contact"
+                  to="/contact/contact-page"
                   className="inline-flex items-center bg-mainBlue font-Outfit hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-md transition-colors"
                 >
                   Book a Rental <ChevronRight className="ml-2 h-5 w-5" />
@@ -499,7 +503,7 @@ const ServicesPage = () => {
                 </div>
 
                 <Link
-                  to="/contact"
+                  to="/contact/contact-page"
                   className="inline-flex items-center bg-mainBlue font-Outfit hover:bg-blue-800 text-white font-medium px-6 py-3 rounded-md transition-colors"
                 >
                   Schedule Service <ChevronRight className="ml-2 h-5 w-5" />
@@ -523,13 +527,13 @@ const ServicesPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="/contact"
+                to="/contact/contact-page"
                 className="inline-flex items-center justify-center bg-mainBlue hover:bg-blue-800 text-whiteColor text-base font-medium px-6 py-3 rounded-md transition-colors"
               >
                 Contact Us Now
               </Link>
               <Link
-                to="/about"
+                to="/about/about-page"
                 className="inline-flex items-center justify-center bg-transparent hover:bg-white/10 font-Outfit text-base border border-white text-white font-medium px-6 py-3 rounded-md transition-colors"
               >
                 Learn More About Us
