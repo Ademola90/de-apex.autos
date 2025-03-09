@@ -141,9 +141,9 @@ const Login = () => {
                   Forgot Password
                 </p>
               </div>
-              <div className=" mt-2">
+              {/* <div className=" mt-2">
                 <GoogleLoginButton />
-              </div>
+              </div> */}
             </form>
             <div className="flex items-center gap-2 mt-5">
               <p className="text-base text-blackColor font-Poppins">

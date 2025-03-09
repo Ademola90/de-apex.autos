@@ -13,7 +13,7 @@ const Cars = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const [cars, setCars] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -192,6 +192,15 @@ const Cars = () => {
                     className="w-full h-[155px] object-cover rounded-t-xl"
                   />
                 ) : (
+                  // <img
+                  //   src={
+                  //     car.images[0].startsWith("http")
+                  //       ? car.images[0]
+                  //       : `${process.env.NEXT_PUBLIC_API_URL}${car.images[0]}`
+                  //   }
+                  //   alt={`${car.make} ${car.model}`}
+                  //   className="w-full h-[155px] object-cover rounded-t-xl"
+                  // />
                   <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
                     <p className="text-white">No Image</p>
                   </div>

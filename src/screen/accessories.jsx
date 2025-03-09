@@ -148,6 +148,15 @@ const Accessories = () => {
                     className="w-[251px] h-[155px] object-cover rounded"
                   />
                 ) : (
+                  // <img
+                  //   src={
+                  //     accessory.images[0].startsWith("http")
+                  //       ? accessory.images[0]
+                  //       : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0]}`
+                  //   }
+                  //   alt={`${accessory.name}`}
+                  //   className="w-[251px] h-[155px] object-cover rounded"
+                  // />
                   <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
                     <p className="text-gray-500">No Image</p>
                   </div>

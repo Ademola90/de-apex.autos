@@ -346,14 +346,14 @@ export default CarAccessoriesCard;
 //         )}
 //       </div>
 
-//       <div className=" justify-center flex items-center mt-10 ">
-//         <button
-//           onClick={() => navigate("/accessories")}
-//           className=" bg-mainBlue text-whiteColor font-Poppins text-base px-4 py-2 rounded-md"
-//         >
-//           View More
-//         </button>
-//       </div>
+// <div className=" justify-center flex items-center mt-10 ">
+//   <button
+//     onClick={() => navigate("/accessories")}
+//     className=" bg-mainBlue text-whiteColor font-Poppins text-base px-4 py-2 rounded-md"
+//   >
+//     View More
+//   </button>
+// </div>
 //     </div>
 //   );
 // };

@@ -10,11 +10,15 @@ import { FaPhone, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import Navbar from "../components/navbar/navbar";
 
 const Details = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { carId } = useParams();
   const [car, setCar] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const phoneNumber = "09032976552"; // The phone number to contact
+  const phoneNumber = "09032976552";
 
   // References for custom navigation buttons
   const prevRef = useRef(null);
@@ -142,6 +146,15 @@ const Details = () => {
                         alt=""
                         className="w-full h-full object-contain"
                       />
+                      {/* <img
+                        src={
+                          image.startsWith("http")
+                            ? image
+                            : `${process.env.NEXT_PUBLIC_API_URL}${image}`
+                        }
+                        alt=""
+                        className="w-full h-full object-contain"
+                      /> */}
                     </div>
                   </SwiperSlide>
                 ))}
@@ -175,11 +188,11 @@ const Details = () => {
               </h2>
               <div className="flex items-baseline">
                 <span className="text-3xl font-bold font-Outfit">
-                  ${car.price.toLocaleString()}
+                  #{car.price.toLocaleString()}
                 </span>
                 {car.discountPrice && (
                   <span className="ml-2 text-lg line-through opacity-70">
-                    ${car.discountPrice.toLocaleString()}
+                    #{car.discountPrice.toLocaleString()}
                   </span>
                 )}
               </div>
@@ -239,7 +252,9 @@ const Details = () => {
 
                 {/* WhatsApp Button */}
                 <a
-                  href={`https://wa.me/${phoneNumber}?text=I'm interested in your ${car.year} ${car.make} ${car.model}`}
+                  href={`https://wa.me/2349032976552?text=${encodeURIComponent(
+                    `I'm interested in your ${car.year} ${car.make} ${car.model}`
+                  )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full py-3 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors mb-3"
@@ -247,6 +262,15 @@ const Details = () => {
                   <FaWhatsapp />
                   <span>WhatsApp</span>
                 </a>
+                {/* <a
+                  href={`https://wa.me/${phoneNumber}?text=I'm interested in your ${car.year} ${car.make} ${car.model}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-3 bg-green-500 text-white rounded-md font-medium hover:bg-green-600 transition-colors mb-3"
+                >
+                  <FaWhatsapp />
+                  <span>WhatsApp</span>
+                </a> */}
 
                 {/* SMS Button (for mobile) */}
                 <a
