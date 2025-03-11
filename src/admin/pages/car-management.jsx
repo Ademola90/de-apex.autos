@@ -390,7 +390,26 @@ const CarManagement = () => {
               <tr key={car._id}>
                 <td>{index + 1 + (page - 1) * limit}</td>
                 <td className="p-2">
-                  {car.images && car.images[0] ? (
+                  {car.images &&
+                  car.images.length > 0 &&
+                  car.images[0].secure_url ? (
+                    <img
+                      src={
+                        car.images[0].secure_url.startsWith("http")
+                          ? car.images[0].secure_url
+                          : `${process.env.NEXT_PUBLIC_API_URL}${car.images[0].secure_url}`
+                      }
+                      alt={`${car.make} ${car.model}`}
+                      className="h-20 w-20 object-cover rounded-md"
+                      onError={(e) => {
+                        e.target.src = "/placeholder.svg?height=80&width=80";
+                        e.target.onerror = null;
+                      }}
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+                  {/* {car.images && car.images[0] ? (
                     <img
                       src={
                         car.images[0].startsWith("http")
@@ -406,7 +425,7 @@ const CarManagement = () => {
                     />
                   ) : (
                     "No Image"
-                  )}
+                  )} */}
                 </td>
 
                 <td className="p-2">{car.make}</td>

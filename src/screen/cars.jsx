@@ -181,7 +181,24 @@ const Cars = () => {
                 className="border shadow-md bg-mainBlue rounded-xl flex flex-col items-center hover:scale-105 cursor-pointer"
                 onClick={() => handleViewDetails(car._id)} // Pass car ID to handleViewDetails
               >
-                {car.images && car.images.length > 0 ? (
+                {car.images &&
+                car.images.length > 0 &&
+                car.images[0].secure_url ? (
+                  <img
+                    src={
+                      car.images[0].secure_url.startsWith("http")
+                        ? car.images[0].secure_url
+                        : `${process.env.NEXT_PUBLIC_API_URL}${car.images[0].secure_url}`
+                    }
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-[155px] object-cover rounded-t-xl"
+                  />
+                ) : (
+                  <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
+                    <p className="text-white">No Image</p>
+                  </div>
+                )}
+                {/* {car.images && car.images.length > 0 ? (
                   <img
                     src={
                       car.images[0].startsWith("http")
@@ -204,7 +221,7 @@ const Cars = () => {
                   <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
                     <p className="text-white">No Image</p>
                   </div>
-                )}
+                )} */}
                 <div className="px-5 w-full pt-3 pb-5">
                   <h3 className="text-lg font-Poppins text-white font-bold mt-2 truncate">
                     {car.make} {car.model}

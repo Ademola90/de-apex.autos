@@ -89,22 +89,20 @@ const CarAccessoriesCard = () => {
             >
               {/* Image Container with Overlay */}
               <div className="relative overflow-hidden">
-                {accessory.images && accessory.images.length > 0 ? (
+                {accessory.images &&
+                accessory.images.length > 0 &&
+                accessory.images[0].secure_url ? (
                   <img
                     src={
-                      accessory.images[0].startsWith("http")
-                        ? accessory.images[0]
-                        : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0]}`
+                      accessory.images[0].secure_url.startsWith("http")
+                        ? accessory.images[0].secure_url
+                        : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0].secure_url}`
                     }
-                    alt=""
-                    className="w-full h-[250px] object-cover transition-transform duration-500 group-hover:scale-110"
-                    onError={(e) => {
-                      e.target.src = "/placeholder.svg?height=250&width=400";
-                      e.target.onerror = null;
-                    }}
+                    alt={`${accessory.name}`}
+                    className="w-[251px] h-[155px] object-cover rounded"
                   />
                 ) : (
-                  <div className="w-full h-[250px] bg-gray-200 flex items-center justify-center">
+                  <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
                     <p className="text-gray-500">No Image</p>
                   </div>
                 )}

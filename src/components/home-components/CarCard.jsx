@@ -126,7 +126,28 @@ const CarCard = () => {
             >
               {/* Image Container with Overlay */}
               <div className="relative overflow-hidden h-[200px]">
-                {car.images && car.images.length > 0 ? (
+                {car.images &&
+                car.images.length > 0 &&
+                car.images[0].secure_url ? (
+                  <img
+                    src={
+                      car.images[0].secure_url.startsWith("http")
+                        ? car.images[0].secure_url
+                        : `${process.env.NEXT_PUBLIC_API_URL}${car.images[0].secure_url}`
+                    }
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      e.target.src = "/placeholder.svg?height=200&width=400";
+                      e.target.onerror = null;
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <IoCarSport className="text-gray-400 text-5xl" />
+                  </div>
+                )}
+                {/* {car.images && car.images.length > 0 ? (
                   <img
                     src={
                       car.images[0].startsWith("http")
@@ -144,7 +165,7 @@ const CarCard = () => {
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                     <IoCarSport className="text-gray-400 text-5xl" />
                   </div>
-                )}
+                )} */}
 
                 {/* Car Type Badge */}
                 {car.type && (

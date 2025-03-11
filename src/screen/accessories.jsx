@@ -137,7 +137,29 @@ const Accessories = () => {
                 className="border shadow-md py-3 flex flex-col items-center hover:scale-105 cursor-pointer"
                 onClick={() => handleViewDetails(accessory._id)}
               >
-                {accessory.images && accessory.images.length > 0 ? (
+                {accessory.images &&
+                accessory.images.length > 0 &&
+                accessory.images[0].secure_url ? (
+                  <img
+                    src={
+                      accessory.images[0].secure_url.startsWith("http")
+                        ? accessory.images[0].secure_url
+                        : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0].secure_url}`
+                    }
+                    alt=""
+                    className="w-full h-[250px] object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      e.target.src = "/placeholder.svg?height=250&width=400";
+                      e.target.onerror = null;
+                    }}
+                  />
+                ) : (
+                  <div className="w-full h-[250px] bg-gray-200 flex items-center justify-center">
+                    <p className="text-gray-500">No Image</p>
+                  </div>
+                )}
+
+                {/* {accessory.images && accessory.images.length > 0 ? (
                   <img
                     src={
                       accessory.images[0].startsWith("http")
@@ -160,7 +182,7 @@ const Accessories = () => {
                   <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
                     <p className="text-gray-500">No Image</p>
                   </div>
-                )}
+                )} */}
 
                 <div className="px-5 w-full">
                   <h3 className="text-lg font-bold mt-2 truncate font-Poppins">

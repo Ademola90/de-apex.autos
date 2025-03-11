@@ -476,7 +476,28 @@ const AccessoriesManagement = () => {
               <tr key={accessory._id}>
                 <td>{index + 1 + (page - 1) * limit}</td>
                 <td className="p-2">
-                  {accessory.images && accessory.images[0] ? (
+                  {accessory.images &&
+                  Array.isArray(accessory.images) &&
+                  accessory.images.length > 0 &&
+                  accessory.images[0].secure_url ? (
+                    <img
+                      src={
+                        accessory.images[0].secure_url.startsWith("http")
+                          ? accessory.images[0].secure_url
+                          : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0].secure_url}`
+                      }
+                      alt={`${accessory.name}`}
+                      className="h-20 w-20 object-cover rounded-md"
+                      onError={(e) => {
+                        e.target.src = "/placeholder.svg?height=80&width=80";
+                        e.target.onerror = null;
+                      }}
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+
+                  {/* {accessory.images && accessory.images[0] ? (
                     <img
                       src={
                         accessory.images[0].startsWith("http")
@@ -492,7 +513,7 @@ const AccessoriesManagement = () => {
                     />
                   ) : (
                     "No Image"
-                  )}
+                  )} */}
                 </td>
                 <td className="p-2">{accessory.name}</td>
                 <td className="p-2">{accessory.category}</td>

@@ -131,7 +131,33 @@ const Details = () => {
                 slidesPerView={1}
                 className="rounded-lg"
               >
-                {car.images.map((image, index) => (
+                {car.images && car.images.length > 0 ? (
+                  car.images.map((image, index) => (
+                    <SwiperSlide key={index}>
+                      <div
+                        className="relative w-full"
+                        style={{ height: "500px" }}
+                      >
+                        <img
+                          src={
+                            image.secure_url.startsWith("http")
+                              ? image.secure_url
+                              : `${process.env.NEXT_PUBLIC_API_URL}${image.secure_url}`
+                          }
+                          alt=""
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))
+                ) : (
+                  <SwiperSlide>
+                    <div className="w-full h-[500px] bg-gray-200 flex items-center justify-center">
+                      <p className="text-gray-500">No Images Available</p>
+                    </div>
+                  </SwiperSlide>
+                )}
+                {/* {car.images.map((image, index) => (
                   <SwiperSlide key={index}>
                     <div
                       className="relative w-full"
@@ -146,18 +172,10 @@ const Details = () => {
                         alt=""
                         className="w-full h-full object-contain"
                       />
-                      {/* <img
-                        src={
-                          image.startsWith("http")
-                            ? image
-                            : `${process.env.NEXT_PUBLIC_API_URL}${image}`
-                        }
-                        alt=""
-                        className="w-full h-full object-contain"
-                      /> */}
+                   
                     </div>
                   </SwiperSlide>
-                ))}
+                ))} */}
               </Swiper>
             </div>
 
