@@ -1,11 +1,13 @@
 //components/nabbar/nabvar.jsx
 
+//components/nabbar/nabvar.jsx
+
 import React, { useState } from "react";
 import deapexlogoblack from "../../assets/deapexlogoblack.png";
 import { Buttons } from "../buttons";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoChevronDown } from "react-icons/io5";
 import { FaCircleUser } from "react-icons/fa6";
 import useStore from "../../data/store/store";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
@@ -14,6 +16,12 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useStore();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if current path is related to stocks (cars or accessories)
+  const isStocksActive =
+    location.pathname.includes("/cars") ||
+    location.pathname.includes("/accessories");
 
   const UserDropdown = () => (
     <Menu as="div" className="relative inline-block text-left">
@@ -73,48 +81,152 @@ const Navbar = () => {
     </Menu>
   );
 
+  // Stocks Dropdown Component
+  const StocksDropdown = () => (
+    <Menu as="div" className="relative inline-block text-left">
+      <MenuButton
+        className={`flex items-center gap-1 font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+          isStocksActive ? "text-mainBlue" : "text-[#535551]"
+        }`}
+      >
+        Stocks
+        <IoChevronDown className="text-sm" />
+      </MenuButton>
+      <MenuItems className="absolute left-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+        <MenuItem>
+          {({ active }) => (
+            <button
+              onClick={() => navigate("/cars")}
+              className={`block w-full px-4 py-2 text-left text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Vehicles
+            </button>
+          )}
+        </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              onClick={() => navigate("/accessories")}
+              className={`block w-full px-4 py-2 text-left text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Accessories
+            </button>
+          )}
+        </MenuItem>
+      </MenuItems>
+    </Menu>
+  );
+
+  // Mobile Stocks Dropdown
+  const MobileStocksDropdown = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <div className="flex flex-col">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`flex items-center justify-between font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+            isStocksActive ? "text-mainBlue" : "text-[#535551]"
+          }`}
+        >
+          Stocks
+          <IoChevronDown
+            className={`text-sm transition-transform duration-300 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        {isOpen && (
+          <div className="ml-4 mt-2 flex flex-col gap-2">
+            <button
+              onClick={() => {
+                navigate("/cars");
+                setIsMenuOpen(false);
+              }}
+              className="text-left font-Poppins text-base text-[#535551] hover:text-mainBlue transition duration-300"
+            >
+              Vehicles
+            </button>
+            <button
+              onClick={() => {
+                navigate("/accessories");
+                setIsMenuOpen(false);
+              }}
+              className="text-left font-Poppins text-base text-[#535551] hover:text-mainBlue transition duration-300"
+            >
+              Accessories
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <nav className="bg-white shadow-md fixed top-0 right-0 left-0 z-40">
       <div className="flex items-center justify-between lg:px-16 md:px-10 px-8 py-4">
         <div>
-          <img className="w-32 h-10" src={deapexlogoblack} alt="Logo" />
+          <img
+            onClick={() => navigate("/")}
+            className="w-32 h-10"
+            src={deapexlogoblack || "/placeholder.svg"}
+            alt="Logo"
+          />
         </div>
-        <ul className=" hidden md:flex items-center gap-8 text-[#535551]">
-          {[
-            { name: "Home", path: "/" },
-            { name: "Vehicles", path: "/cars" },
-            { name: "About", path: "/about/about-page" },
-            { name: "Services", path: "/service/services-page" },
-            { name: "Contact", path: "/contact/contact-page" },
-          ].map((item, index) => (
-            <NavLink
-              key={index}
-              to={item.path}
-              className={({ isActive }) =>
-                `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
-                  isActive ? "text-mainBlue" : "text-[#535551]"
-                }`
-              }
-            >
-              {item.name}
-            </NavLink>
-          ))}
+        <ul className="hidden md:flex items-center gap-8 text-[#535551]">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+                isActive ? "text-mainBlue" : "text-[#535551]"
+              }`
+            }
+          >
+            Home
+          </NavLink>
+
+          {/* Stocks Dropdown */}
+          <StocksDropdown />
+
+          <NavLink
+            to="/about/about-page"
+            className={({ isActive }) =>
+              `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+                isActive ? "text-mainBlue" : "text-[#535551]"
+              }`
+            }
+          >
+            About
+          </NavLink>
+
+          <NavLink
+            to="/service/services-page"
+            className={({ isActive }) =>
+              `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+                isActive ? "text-mainBlue" : "text-[#535551]"
+              }`
+            }
+          >
+            Services
+          </NavLink>
+
+          <NavLink
+            to="/contact/contact-page"
+            className={({ isActive }) =>
+              `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+                isActive ? "text-mainBlue" : "text-[#535551]"
+              }`
+            }
+          >
+            Contact
+          </NavLink>
         </ul>
 
-        {/* <ul className="hidden md:flex items-center gap-8 text-[#535551]">
-          {["Home", "About", "Services", "Contact"].map((item) => (
-           <NavLink
-           to={item.path}
-           className={({ isActive }) =>
-             `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
-               isActive ? "text-mainBlue" : "text-[#535551]"
-             }`
-           }
-         >
-           {item.name}
-         </NavLink>;
-          ))}
-        </ul> */}
         <div className="hidden md:flex items-center">
           {user ? (
             <UserDropdown />
@@ -143,37 +255,55 @@ const Navbar = () => {
 
       {isMenuOpen && (
         <div className="md:hidden bg-white px-8 pb-4 animate-slideInDown">
-          <ul className=" grid items-center gap-8 text-[#535551]">
-            {[
-              { name: "Home", path: "/" },
-              { name: "Vehicles", path: "/cars" },
-              { name: "About", path: "/about/about-page" },
-              { name: "Services", path: "/service/services-page" },
-              { name: "Contact", path: "/contact/contact-page" },
-            ].map((item) => (
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer  ${
-                    isActive ? "text-mainBlue" : "text-[#535551]"
-                  }`
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
+          <ul className="grid items-center gap-4 text-[#535551]">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer ${
+                  isActive ? "text-mainBlue" : "text-[#535551]"
+                }`
+              }
+            >
+              Home
+            </NavLink>
+
+            {/* Mobile Stocks Dropdown */}
+            <MobileStocksDropdown />
+
+            <NavLink
+              to="/about/about-page"
+              className={({ isActive }) =>
+                `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer ${
+                  isActive ? "text-mainBlue" : "text-[#535551]"
+                }`
+              }
+            >
+              About
+            </NavLink>
+
+            <NavLink
+              to="/service/services-page"
+              className={({ isActive }) =>
+                `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer ${
+                  isActive ? "text-mainBlue" : "text-[#535551]"
+                }`
+              }
+            >
+              Services
+            </NavLink>
+
+            <NavLink
+              to="/contact/contact-page"
+              className={({ isActive }) =>
+                `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer ${
+                  isActive ? "text-mainBlue" : "text-[#535551]"
+                }`
+              }
+            >
+              Contact
+            </NavLink>
           </ul>
-          {/* <ul className="flex flex-col gap-4 text-[#535551]">
-            {["Home", "About", "Services", "Contact"].map((item) => (
-              <li
-                key={item}
-                className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item}
-              </li>
-            ))}
-          </ul> */}
+
           <div className="flex flex-col gap-4 mt-4">
             {user ? (
               <UserDropdown />
@@ -209,7 +339,7 @@ export default Navbar;
 // import React, { useState } from "react";
 // import deapexlogoblack from "../../assets/deapexlogoblack.png";
 // import { Buttons } from "../buttons";
-// import { useNavigate } from "react-router-dom";
+// import { NavLink, useNavigate } from "react-router-dom";
 // import { GiHamburgerMenu } from "react-icons/gi";
 // import { IoClose } from "react-icons/io5";
 // import { FaCircleUser } from "react-icons/fa6";
@@ -264,8 +394,8 @@ export default Navbar;
 //           {({ active }) => (
 //             <button
 //               onClick={() => {
-//                 logout(); // Clear user state
-//                 navigate("/"); // Optionally navigate to the homepage
+//                 logout();
+//                 navigate("/");
 //               }}
 //               className={`block w-full px-4 py-2 text-left text-sm ${
 //                 active ? "bg-gray-100 text-gray-900" : "text-gray-700"
@@ -280,26 +410,47 @@ export default Navbar;
 //   );
 
 //   return (
-//     <nav className="bg-whiteColor shadow-md fixed top-0 right-0 left-0 z-40">
+//     <nav className="bg-white shadow-md fixed top-0 right-0 left-0 z-40">
 //       <div className="flex items-center justify-between lg:px-16 md:px-10 px-8 py-4">
-//         {/* Logo */}
 //         <div>
 //           <img className="w-32 h-10" src={deapexlogoblack} alt="Logo" />
 //         </div>
-
-//         {/* Desktop Navigation */}
-//         <ul className="hidden md:flex items-center gap-8 text-[#535551]">
-//           {["Home", "About", "Services", "Contact"].map((item) => (
-//             <li
-//               key={item}
-//               className="font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer"
+//         <ul className=" hidden md:flex items-center gap-8 text-[#535551]">
+//           {[
+//             { name: "Home", path: "/" },
+//             { name: "Stocks", path: "/cars" },
+//             { name: "About", path: "/about/about-page" },
+//             { name: "Services", path: "/service/services-page" },
+//             { name: "Contact", path: "/contact/contact-page" },
+//           ].map((item, index) => (
+//             <NavLink
+//               key={index}
+//               to={item.path}
+//               className={({ isActive }) =>
+//                 `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+//                   isActive ? "text-mainBlue" : "text-[#535551]"
+//                 }`
+//               }
 //             >
-//               {item}
-//             </li>
+//               {item.name}
+//             </NavLink>
 //           ))}
 //         </ul>
 
-//         {/* Desktop Buttons */}
+//         {/* <ul className="hidden md:flex items-center gap-8 text-[#535551]">
+//           {["Home", "About", "Services", "Contact"].map((item) => (
+//            <NavLink
+//            to={item.path}
+//            className={({ isActive }) =>
+//              `font-Poppins text-lg font-normal transition duration-300 cursor-pointer ${
+//                isActive ? "text-mainBlue" : "text-[#535551]"
+//              }`
+//            }
+//          >
+//            {item.name}
+//          </NavLink>;
+//           ))}
+//         </ul> */}
 //         <div className="hidden md:flex items-center">
 //           {user ? (
 //             <UserDropdown />
@@ -308,18 +459,16 @@ export default Navbar;
 //               <Buttons
 //                 onClick={() => navigate("/signup")}
 //                 text="Register"
-//                 css="Poppins text-base font-semibold text-whiteColor w-28 h-10 bg-mainBlue hover:scale-105 transition duration-300"
+//                 css="Poppins text-base font-semibold text-white w-28 h-10 bg-mainBlue hover:scale-105 transition duration-300"
 //               />
 //               <Buttons
 //                 onClick={() => navigate("/login")}
 //                 text="Login"
-//                 css="Poppins text-base font-semibold text-mainBlue w-28 h-10 bg-whiteColor border-mainBlue border-[1px] hover:scale-105 transition duration-300"
+//                 css="Poppins text-base font-semibold text-mainBlue w-28 h-10 bg-white border-mainBlue border-[1px] hover:scale-105 transition duration-300"
 //               />
 //             </>
 //           )}
 //         </div>
-
-//         {/* Hamburger Menu */}
 //         <div
 //           className="md:hidden text-2xl text-[#535551] cursor-pointer"
 //           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -328,10 +477,29 @@ export default Navbar;
 //         </div>
 //       </div>
 
-//       {/* Mobile Navigation */}
 //       {isMenuOpen && (
-//         <div className="md:hidden bg-whiteColor px-8 pb-4 animate-slideInDown">
-//           <ul className="flex flex-col gap-4 text-[#535551]">
+//         <div className="md:hidden bg-white px-8 pb-4 animate-slideInDown">
+//           <ul className=" grid items-center gap-8 text-[#535551]">
+//             {[
+//               { name: "Home", path: "/" },
+//               { name: "Stocks", path: "/cars" },
+//               { name: "About", path: "/about/about-page" },
+//               { name: "Services", path: "/service/services-page" },
+//               { name: "Contact", path: "/contact/contact-page" },
+//             ].map((item) => (
+//               <NavLink
+//                 to={item.path}
+//                 className={({ isActive }) =>
+//                   `font-Poppins text-lg font-normal hover:text-mainBlue transition duration-300 cursor-pointer  ${
+//                     isActive ? "text-mainBlue" : "text-[#535551]"
+//                   }`
+//                 }
+//               >
+//                 {item.name}
+//               </NavLink>
+//             ))}
+//           </ul>
+//           {/* <ul className="flex flex-col gap-4 text-[#535551]">
 //             {["Home", "About", "Services", "Contact"].map((item) => (
 //               <li
 //                 key={item}
@@ -341,12 +509,10 @@ export default Navbar;
 //                 {item}
 //               </li>
 //             ))}
-//           </ul>
+//           </ul> */}
 //           <div className="flex flex-col gap-4 mt-4">
 //             {user ? (
-//               <div className="flex justify-center">
-//                 <UserDropdown />
-//               </div>
+//               <UserDropdown />
 //             ) : (
 //               <>
 //                 <Buttons
@@ -355,7 +521,7 @@ export default Navbar;
 //                     setIsMenuOpen(false);
 //                   }}
 //                   text="Register"
-//                   css="Poppins text-base font-semibold text-whiteColor w-full h-10 bg-mainBlue hover:scale-105 transition duration-300"
+//                   css="Poppins text-base font-semibold text-white w-full h-10 bg-mainBlue hover:scale-105 transition duration-300"
 //                 />
 //                 <Buttons
 //                   onClick={() => {
@@ -363,7 +529,7 @@ export default Navbar;
 //                     setIsMenuOpen(false);
 //                   }}
 //                   text="Login"
-//                   css="Poppins text-base font-semibold text-mainBlue w-full h-10 bg-whiteColor border-mainBlue border-[1px] hover:scale-105 transition duration-300"
+//                   css="Poppins text-base font-semibold text-mainBlue w-full h-10 bg-white border-mainBlue border-[1px] hover:scale-105 transition duration-300"
 //                 />
 //               </>
 //             )}
@@ -372,212 +538,6 @@ export default Navbar;
 //       )}
 //     </nav>
 //   );
-// };
-
-// export default Navbar;
-
-// import React, { useContext, useState } from "react";
-// import { assets } from "../assets/assets";
-// import { GiHamburgerMenu } from "react-icons/gi";
-// import { Link, useNavigate } from "react-router-dom";
-// import { StoreContext } from "../context/StoreContext";
-
-// const Navbar = ({ setShowLogin }) => {
-//     const [menu, setMenu] = useState("home");
-//     const [showMenu, setShowMenu] = useState(false);
-//     const [isProfile, setIsProfile] = useState(false);
-//     const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
-//     const navigate = useNavigate();
-//     const Logout = () => {
-//         localStorage.removeItem("token");
-//         setToken("");
-//         navigate("/");
-//     };
-
-//     return (
-//         <div className="flex items-center justify-between py-4 lg:px-16 md:px-10 px-8">
-//             <div>
-//                 {/* <img className="w-36" src={assets.logo} alt="Logo" /> */}
-//                 <Link to="/" className=" font-bold text-4xl text-[#FF4C24]">
-//                     NEXTREND.
-//                 </Link>
-//             </div>
-
-//             {/* Large screens */}
-//             <ul className="lg:flex md:flex hidden items-center gap-10 list-none text-[#49557e] text-base">
-//                 <Link
-//                     to="/"
-//                     className={`cursor-pointer pb-2 ${menu === "home" ? "border-b-2 borderb-[#49557e]" : ""
-//                         }`}
-//                     onClick={() => setMenu("home")}
-//                 >
-//                     Home
-//                 </Link>
-//                 <a
-//                     href="#explore-menu"
-//                     className={`cursor-pointer pb-2 ${menu === "menu" ? "border-b-2 borderb-[#49557e]" : ""
-//                         }`}
-//                     onClick={() => setMenu("menu")}
-//                 >
-//                     Menu
-//                 </a>
-//                 <a
-//                     href="#app-download"
-//                     className={`cursor-pointer pb-2 ${menu === "mobile-app" ? "border-b-2 borderb-[#49557e]" : ""
-//                         }`}
-//                     onClick={() => setMenu("mobile-app")}
-//                 >
-//                     Mobile-app
-//                 </a>
-//                 <a
-//                     href="#footer"
-//                     className={`cursor-pointer pb-2 ${menu === "contact-us" ? "border-b-2 borderb-[#49557e]" : ""
-//                         }`}
-//                     onClick={() => setMenu("contact-us")}
-//                 >
-//                     Contact us
-//                 </a>
-//             </ul>
-
-//             {/* Large screen icons */}
-//             <div className="lg:flex md:hidden hidden items-center gap-5">
-//                 <img className="cursor-pointer" src={assets.search_icon} alt="Search" />
-//                 <div className="relative px-2">
-//                     <Link to="/cart">
-//                         <img
-//                             className="cursor-pointer"
-//                             src={assets.basket_icon}
-//                             alt="Basket"
-//                         />
-//                     </Link>
-
-//                     <div
-//                         className={`${getTotalCartAmount() === 0
-//                                 ? ""
-//                                 : " bg-orange-600 rounded-full w-2 h-2 absolute top-0 right-0"
-//                             }   `}
-//                     ></div>
-//                 </div>
-//                 {!token ? (
-//                     <button
-//                         onClick={() => setShowLogin(true)}
-//                         className="hover:bg-[#fff4f2] bg-transparent text-base border border-orange-600 text-[#49557e] px-4 py-2 rounded-full"
-//                     >
-//                         Sign in
-//                     </button>
-//                 ) : (
-//                     <div className="navbar-profile relative  ">
-//                         <img
-//                             onClick={() => setIsProfile(!isProfile)}
-//                             src={assets.profile_icon}
-//                             alt=""
-//                         />
-//                         {isProfile && (
-//                             <ul className="nav-profile-dropdown space-y-3 grid justify-center absolute right-0 top-10 z-40 bg-[#fff] border text-[#EE4722] border-[#EE4722] px-10 py-5">
-//                                 <li className=" cursor-pointer flex items-center gap-2">
-//                                     <img className=" w-5" src={assets.bag_icon} alt="" />{" "}
-//                                     <p className=" hover:text-[#FF8872]">Orders</p>
-//                                 </li>{" "}
-//                                 <hr className=" " />
-//                                 <li
-//                                     onClick={Logout}
-//                                     className=" cursor-pointer flex items-center gap-2"
-//                                 >
-//                                     <img className=" w-5" src={assets.logout_icon} alt="" />{" "}
-//                                     <p className=" hover:text-[#FF8872]">Logout</p>
-//                                 </li>
-//                             </ul>
-//                         )}
-//                     </div>
-//                 )}
-//             </div>
-
-//             {/* Small screens */}
-//             <div className="lg:hidden md:block block">
-//                 <GiHamburgerMenu
-//                     onClick={() => setShowMenu(!showMenu)}
-//                     className="lg:hidden md:block block"
-//                     size={24}
-//                 />
-
-//                 {/* Mobile Menu */}
-//                 {showMenu && (
-//                     <div
-//                         onClick={() => setShowMenu(false)}
-//                         className="absolute z-40 bg-slate-600 justify-center grid items-center top-0 bottom-0 left-0 right-0"
-//                     >
-//                         <ul className=" lg:hidden md:hidden grid items-center gap-10 list-none text-[#fff] text-base">
-//                             <li
-//                                 className={`cursor-pointer pb-2 ${menu === "home" ? "border-b borderb-[#49557e]" : ""
-//                                     }`}
-//                                 onClick={() => {
-//                                     setMenu("home");
-//                                     setShowMenu(false);
-//                                 }}
-//                             >
-//                                 Home
-//                             </li>
-//                             <li
-//                                 className={`cursor-pointer pb-2 ${menu === "menu" ? "border-b-2 borderb-[#49557e]" : ""
-//                                     }`}
-//                                 onClick={() => {
-//                                     setMenu("menu");
-//                                     setShowMenu(false);
-//                                 }}
-//                             >
-//                                 Menu
-//                             </li>
-//                             <li
-//                                 className={`cursor-pointer pb-2 ${menu === "mobile-app" ? "border-b-2 borderb-[#49557e]" : ""
-//                                     }`}
-//                                 onClick={() => {
-//                                     setMenu("mobile-app");
-//                                     setShowMenu(false);
-//                                 }}
-//                             >
-//                                 Mobile-app
-//                             </li>
-//                             <li
-//                                 className={`cursor-pointer pb-2 ${menu === "contact-us" ? "border-b-2 borderb-[#49557e]" : ""
-//                                     }`}
-//                                 onClick={() => {
-//                                     setMenu("contact-us");
-//                                     setShowMenu(false);
-//                                 }}
-//                             >
-//                                 Contact us
-//                             </li>
-//                         </ul>
-
-//                         <div className="flex items-center gap-5 bg-white px-4 py-2">
-//                             <img
-//                                 className="cursor-pointer"
-//                                 src={assets.search_icon}
-//                                 alt="Search"
-//                             />
-//                             <div className="relative px-2">
-//                                 <Link to="/cart">
-//                                     <img
-//                                         className="cursor-pointer"
-//                                         src={assets.basket_icon}
-//                                         alt="Basket"
-//                                     />
-//                                 </Link>
-
-//                                 <div className="bg-orange-600 rounded-full w-2 h-2 absolute top-0 right-0"></div>
-//                             </div>
-//                             <button
-//                                 onClick={() => setShowLogin(true)}
-//                                 className="hover:bg-[#fff4f2] bg-transparent text-base border border-orange-600 text-[#49557e] px-4 py-2 rounded-full"
-//                             >
-//                                 Sign in
-//                             </button>
-//                         </div>
-//                     </div>
-//                 )}
-//             </div>
-//         </div>
-//     );
 // };
 
 // export default Navbar;

@@ -9,7 +9,7 @@ const OthersHero = ({ text }) => {
         backgroundImage: `url(${otherhero})`,
       }}
     >
-      <div className=" h-[400px]  w-full bg-black bg-opacity-70 flex justify-center items-center">
+      <div className=" h-[420px]  w-full bg-black bg-opacity-45 flex justify-center items-center">
         <p className=" text-5xl font-Poppins text-whiteColor font-bold">
           {text}
         </p>
