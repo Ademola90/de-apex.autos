@@ -204,8 +204,8 @@ const CarCard = () => {
               </div>
 
               {/* Content */}
-              <div className="p-4">
-                <h3 className="text-lg font-bold font-Poppins text-gray-800 group-hover:text-mainBlue transition-colors">
+              <div className="p-4 grid">
+                <h3 className="text-lg truncate font-bold font-Poppins text-gray-800 group-hover:text-mainBlue transition-colors">
                   {car.make} {car.model}
                 </h3>
 
@@ -233,19 +233,23 @@ const CarCard = () => {
                 {/* Price */}
                 <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-baseline">
-                    <span className="text-xl font-bold text-mainBlue">
-                      ₦{parseInt(car.price, 10).toLocaleString()}
-                    </span>
-                    {car.discountPrice && (
-                      <span className="ml-2 text-sm line-through text-gray-400">
-                        ₦{parseInt(car.discountPrice, 10).toLocaleString()}
+                    {user ? (
+                      <>
+                        <span className="text-xl font-bold text-mainBlue">
+                          ₦{parseInt(car.price, 10).toLocaleString()}
+                        </span>
+                        {car.discountPrice && (
+                          <span className="ml-2 text-sm line-through text-gray-400">
+                            ₦{parseInt(car.discountPrice, 10).toLocaleString()}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-mainBlue font-medium">
+                        Login to view price
                       </span>
                     )}
                   </div>
-
-                  {/* <div className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {car.transmission || "Manual"}
-                  </div> */}
                 </div>
               </div>
 

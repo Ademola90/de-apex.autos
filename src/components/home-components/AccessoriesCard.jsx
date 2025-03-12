@@ -99,7 +99,7 @@ const CarAccessoriesCard = () => {
                         : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0].secure_url}`
                     }
                     alt={`${accessory.name}`}
-                    className="w-[251px] h-[155px] object-cover rounded"
+                    className="w-full h-[200px] object-cover rounded"
                   />
                 ) : (
                   <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">
@@ -130,7 +130,7 @@ const CarAccessoriesCard = () => {
               </div>
 
               {/* Content */}
-              <div className="p-4">
+              <div className="p-4 grid">
                 <div className="flex justify-between items-start">
                   <h3 className="text-lg font-bold font-Poppins line-clamp-1 text-gray-800 group-hover:text-mainBlue transition-colors">
                     {accessory.name}
@@ -167,28 +167,27 @@ const CarAccessoriesCard = () => {
                 {/* Price and Action */}
                 <div className="mt-2 flex items-center justify-between">
                   <div className="flex items-baseline">
-                    <span className="text-xl font-bold text-mainBlue">
-                      ₦{parseInt(accessory.price, 10).toLocaleString()}
-                    </span>
-                    {accessory.discountPrice && (
-                      <span className="ml-2 text-sm line-through text-gray-400">
-                        ₦
-                        {parseInt(accessory.discountPrice, 10).toLocaleString()}
+                    {user ? (
+                      <>
+                        <span className="text-xl font-bold text-mainBlue">
+                          ₦{parseInt(accessory.price, 10).toLocaleString()}
+                        </span>
+                        {accessory.discountPrice && (
+                          <span className="ml-2 text-sm line-through text-gray-400">
+                            ₦
+                            {parseInt(
+                              accessory.discountPrice,
+                              10
+                            ).toLocaleString()}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-mainBlue font-medium">
+                        Login to view price
                       </span>
                     )}
                   </div>
-
-                  {/* <button
-                    className="text-mainBlue hover:text-white hover:bg-mainBlue border border-mainBlue rounded-full p-2 transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      // Add to cart functionality here
-                      toast.success(`${accessory.name} added to cart`);
-                    }}
-                    aria-label="Add to cart"
-                  >
-                    <FaShoppingCart className="text-sm" />
-                  </button> */}
                 </div>
               </div>
             </div>
