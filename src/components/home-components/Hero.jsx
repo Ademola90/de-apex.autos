@@ -2,8 +2,10 @@ import React from "react";
 import herobg from "../../assets/herobg.png";
 import { ArrowRightButtons, BuyCartButtons } from "../buttons";
 import { FaInstagram, FaInstagramSquare, FaTiktok } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div
       className="bg-cover bg-center lg:pl-28 lg:pr-0 md:pl-10 md:pr-10 pl-8 pr-8 lg:mt-16 md:mt-16 mt-14  py-10 "
@@ -23,16 +25,18 @@ const Hero = () => {
       </div>
       <div className=" flex items-center gap-3 mt-10">
         <ArrowRightButtons
+          onClick={() => navigate("/service/services-page")}
           css={
             " text-base font-medium text-whiteColor w-36 h-10 bg-mainBlue hover:scale-105 hover:transition duration-300 "
           }
-          text="Explore Car"
+          text="Services"
         />
         <BuyCartButtons
+          onClick={() => navigate("/cars")}
           css={
             "Poppins text-base font-medium text-mainBlue w-36 h-10 bg-whiteColor  border-[1px] border-mainBlue hover:scale-105 hover:transition duration-300"
           }
-          text="Buy Car"
+          text="Stocks"
         />
       </div>
 

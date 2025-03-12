@@ -4,8 +4,10 @@ import imgone from "../../assets/imgone.png";
 import imgtwo from "../../assets/imgtwo.png";
 import imgthree from "../../assets/imgthree.png";
 import imgfour from "../../assets/imgfour.png";
+import { useNavigate } from "react-router-dom";
 
 const HomeSecondSection = () => {
+  const navigate = useNavigate();
   return (
     <div className=" flex justify-center ">
       <div className=" grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-center">
@@ -24,6 +26,7 @@ const HomeSecondSection = () => {
               just for you.
             </p>
             <ArrowRightButtons
+              onClick={() => navigate("/cars")}
               css={
                 " text-base font-normal mt-10 text-whiteColor w-28 h-10 border-[1px] border-[#fff] hover:scale-105 hover:transition duration-300 "
               }
@@ -49,14 +52,15 @@ const HomeSecondSection = () => {
               Top Easy To User
             </p>
             <p className=" font-Poppins text-[#D6D6D6] font-normal text-sm mt-3">
-              Discover the best car deals with flexible payment options tailored
-              just for you.
+              Discover the best accessories deals with flexible payment options
+              tailored just for you.
             </p>
             <ArrowRightButtons
+              onClick={() => navigate("/accessories")}
               css={
-                " text-base font-normal mt-10 text-whiteColor w-28 h-10 border-[1px] border-[#fff] hover:scale-105 hover:transition duration-300 "
+                " text-base font-normal mt-10 text-whiteColor w-44 h-10 border-[1px] border-[#fff] hover:scale-105 hover:transition duration-300 "
               }
-              text="Buy Car"
+              text="Buy Accessories"
             />
           </div>
         </div>

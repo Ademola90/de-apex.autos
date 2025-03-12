@@ -79,8 +79,9 @@ function App() {
             </Route>
           </Routes>
         </Suspense>
+        <WhatsAppButton />
       </BrowserRouter>
-      <WhatsAppButton />
+
       <ToastContainer />
     </div>
   )
