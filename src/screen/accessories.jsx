@@ -13,6 +13,8 @@ import {
   IoCheckmarkCircle,
 } from "react-icons/io5";
 import Footer from "../components/footer/footer";
+import OurServices from "../components/OurServices";
+import OurMission from "../components/OurMission";
 
 const Accessories = () => {
   useEffect(() => {
@@ -314,7 +316,7 @@ const Accessories = () => {
                 onClick={() => handleViewDetails(accessory._id)}
               >
                 {/* Image Container */}
-                <div className="relative overflow-hidden h-[220px]">
+                <div className="relative overflow-hidden lg:h-[250px] md:h-[250px] h-[300px]">
                   {accessory.images &&
                   accessory.images.length > 0 &&
                   accessory.images[0].secure_url ? (
@@ -416,6 +418,9 @@ const Accessories = () => {
           )}
         </div>
       </div>
+      <OurServices />
+
+      <OurMission />
       <Footer />
     </div>
   );

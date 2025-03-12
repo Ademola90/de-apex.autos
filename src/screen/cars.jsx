@@ -14,6 +14,8 @@ import {
   IoCarSport,
   IoColorPaletteOutline,
 } from "react-icons/io5";
+import OurMission from "../components/OurMission";
+import OurServices from "../components/OurServices";
 
 const Cars = () => {
   useEffect(() => {
@@ -252,7 +254,7 @@ const Cars = () => {
                 onClick={() => handleViewDetails(car._id)}
               >
                 {/* Image Container */}
-                <div className="relative overflow-hidden h-[200px]">
+                <div className="relative overflow-hidden lg:h-[250px] md:h-[250px] h-[300px]">
                   {car.images &&
                   car.images.length > 0 &&
                   car.images[0].secure_url ? (
@@ -356,6 +358,9 @@ const Cars = () => {
           )}
         </div>
       </div>
+      <OurServices />
+
+      <OurMission />
 
       <Footer />
     </div>

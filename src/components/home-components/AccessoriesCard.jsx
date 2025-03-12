@@ -88,7 +88,7 @@ const CarAccessoriesCard = () => {
               onClick={() => handleViewDetails(accessory._id)}
             >
               {/* Image Container with Overlay */}
-              <div className="relative overflow-hidden">
+              <div className="relative overflow-hidden lg:h-[250px] md:h-[250px] h-[300px]">
                 {accessory.images &&
                 accessory.images.length > 0 &&
                 accessory.images[0].secure_url ? (
@@ -99,7 +99,7 @@ const CarAccessoriesCard = () => {
                         : `${process.env.NEXT_PUBLIC_API_URL}${accessory.images[0].secure_url}`
                     }
                     alt={`${accessory.name}`}
-                    className="w-full h-[200px] object-cover rounded"
+                    className="w-full h-full object-cover rounded-t-md"
                   />
                 ) : (
                   <div className="w-[251px] h-[155px] bg-gray-200 flex items-center justify-center rounded">

@@ -125,7 +125,7 @@ const CarCard = () => {
               onClick={() => handleViewDetails(car._id)}
             >
               {/* Image Container with Overlay */}
-              <div className="relative overflow-hidden h-[200px]">
+              <div className="relative overflow-hidden lg:h-[250px] md:h-[250px] h-[300px]">
                 {car.images &&
                 car.images.length > 0 &&
                 car.images[0].secure_url ? (

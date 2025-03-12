@@ -10,7 +10,7 @@ const OurServices = () => {
             <div className="inline-block bg-blue-100 text-blue-800 font-Outfit px-4 py-1 rounded-full text-sm font-medium mb-6">
               Our Services
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold font-Poppins">
+            <h2 className="text-2xl md:text-4xl font-bold font-Poppins">
               Complete Automotive Solutions
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto font-Outfit">
