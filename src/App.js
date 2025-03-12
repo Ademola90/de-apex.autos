@@ -17,6 +17,7 @@ import Accessories from "./screen/accessories"
 import AccessoryDetails from "./screen/accessory-details"
 import ServicesPage from "./screen/services/services-page"
 import ContactPage from "./screen/contact/contact"
+import WhatsAppButton from "./components/buttons/WhatsAppButton"
 
 
 const AboutPage = lazy(() => import("./screen/about/about-page"))
@@ -79,6 +80,7 @@ function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+      <WhatsAppButton />
       <ToastContainer />
     </div>
   )

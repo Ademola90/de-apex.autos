@@ -18,7 +18,7 @@ const Details = () => {
   const [car, setCar] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const phoneNumber = "09032976552";
+  const phoneNumber = "2349032976552";
 
   // References for custom navigation buttons
   const prevRef = useRef(null);
@@ -349,7 +349,7 @@ export default Details;
 //   const [car, setCar] = useState(null);
 //   const [isLoading, setIsLoading] = useState(true);
 //   const [error, setError] = useState(null);
-//   const phoneNumber = "09032976552";
+//   const phoneNumber = "2349032976552";
 
 //   // References for custom navigation buttons
 //   const prevRef = useRef(null);

@@ -24,7 +24,7 @@ const AccessoryDetails = () => {
   const [accessory, setAccessory] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const phoneNumber = "09032976552"; // The phone number to contact
+  const phoneNumber = "2349032976552"; // The phone number to contact
 
   // References for custom navigation buttons
   const prevRef = useRef(null);
