@@ -89,7 +89,7 @@ const Accessories = () => {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (accessory) =>
-          accessory.name.toLowerCase().includes(term) ||
+          accessory.name?.toLowerCase().includes(term) ||
           (accessory.description &&
             accessory.description.toLowerCase().includes(term))
       );
@@ -102,15 +102,48 @@ const Accessories = () => {
       );
     }
 
-    // Filter by make
+    // Filter by make (case-insensitive and handle null/undefined)
     if (selectedMake !== "All") {
       filtered = filtered.filter(
-        (accessory) => accessory.make === selectedMake
+        (accessory) =>
+          accessory.make &&
+          accessory.make.toLowerCase() === selectedMake.toLowerCase()
       );
     }
 
     setFilteredAccessories(filtered);
   }, [selectedCategory, selectedMake, accessories, searchTerm]);
+
+  // useEffect(() => {
+  //   let filtered = accessories;
+
+  //   // Filter by search term
+  //   if (searchTerm.trim() !== "") {
+  //     const term = searchTerm.toLowerCase();
+  //     filtered = filtered.filter(
+  //       (accessory) =>
+  //         accessory.name.toLowerCase().includes(term) ||
+  //         (accessory.description &&
+  //           accessory.description.toLowerCase().includes(term))
+  //     );
+  //   }
+
+  //   // Filter by category
+  //   if (selectedCategory !== "All") {
+  //     filtered = filtered.filter(
+  //       (accessory) => accessory.category === selectedCategory
+  //     );
+  //   }
+
+  //   // Filter by make
+  //   if (selectedMake !== "All") {
+  //     filtered = filtered.filter(
+  //       (accessory) => accessory.make === selectedMake
+  //     );
+  //   }
+
+  //   setFilteredAccessories(filtered);
+  // }, [selectedCategory, selectedMake, accessories, searchTerm]);
 
   const handleViewDetails = (accessoryId) => {
     if (!user) {
@@ -305,9 +338,9 @@ const Accessories = () => {
                   )}
 
                   {/* Category Badge */}
-                  {accessory.category && (
+                  {accessory.make && (
                     <div className="absolute top-3 left-3 bg-mainBlue text-white text-xs font-semibold px-2 py-1 rounded-full">
-                      {accessory.category}
+                      {accessory.make}
                     </div>
                   )}
 

@@ -108,9 +108,9 @@ const CarAccessoriesCard = () => {
                 )}
 
                 {/* Category Badge */}
-                {accessory.category && (
+                {accessory.make && (
                   <div className="absolute top-3 left-3 bg-mainBlue text-white text-xs font-semibold px-2 py-1 rounded-full">
-                    {accessory.category}
+                    {accessory.make}
                   </div>
                 )}
 
