@@ -256,7 +256,7 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-lg font-Poppins">
-                        Main Showroom
+                        Main Office
                       </h3>
                       <p className="text-gray-600 text-base font-Outfit ">
                         113 Osogbo road, Dagbolu, Osun State, Nigeria

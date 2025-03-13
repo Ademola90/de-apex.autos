@@ -22,6 +22,7 @@ const Navbar = () => {
   const isStocksActive =
     location.pathname.includes("/cars") ||
     location.pathname.includes("/accessories");
+  location.pathname.includes("/car-hire");
 
   const UserDropdown = () => (
     <Menu as="div" className="relative inline-block text-left">
@@ -117,6 +118,18 @@ const Navbar = () => {
             </button>
           )}
         </MenuItem>
+        <MenuItem>
+          {({ active }) => (
+            <button
+              onClick={() => navigate("/car-hire")}
+              className={`block w-full px-4 py-2 text-left text-sm ${
+                active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Hire Car
+            </button>
+          )}
+        </MenuItem>
       </MenuItems>
     </Menu>
   );
@@ -160,6 +173,15 @@ const Navbar = () => {
               className="text-left font-Poppins text-base text-[#535551] hover:text-mainBlue transition duration-300"
             >
               Accessories
+            </button>
+            <button
+              onClick={() => {
+                navigate("/car-hire");
+                setIsMenuOpen(false);
+              }}
+              className="text-left font-Poppins text-base text-[#535551] hover:text-mainBlue transition duration-300"
+            >
+              Hire car
             </button>
           </div>
         )}

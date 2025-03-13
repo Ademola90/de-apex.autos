@@ -18,6 +18,13 @@ import AccessoryDetails from "./screen/accessory-details"
 import ServicesPage from "./screen/services/services-page"
 import ContactPage from "./screen/contact/contact"
 import WhatsAppButton from "./components/buttons/WhatsAppButton"
+import CarHirePage from "./screen/car-hire/car-hire-page"
+import CarHireDetails from "./screen/car-hire/car-hire-details"
+import CarHireCheckout from "./screen/car-hire/car-hire-checkout"
+import CarHireConfirmation from "./screen/car-hire/car-hire-confirmation"
+import CarHireManagement from "./admin/pages/car-hire-management"
+import AddHireCar from "./admin/pages/add-hire-car"
+import CarHireBookings from "./admin/pages/car-hire-bookings"
 
 
 const AboutPage = lazy(() => import("./screen/about/about-page"))
@@ -67,6 +74,10 @@ function App() {
             <Route path="/details/:carId" element={<Details />} />
             <Route path="/accessories" element={<Accessories />} />
             <Route path="/accessory-details/:accessoryId" element={<AccessoryDetails />} />
+            <Route path="/car-hire" element={<CarHirePage />} />
+            <Route path="/car-hire/details/:carId" element={<CarHireDetails />} />
+            <Route path="/car-hire/checkout/:carId" element={<CarHireCheckout />} />
+            <Route path="/car-hire/confirmation" element={<CarHireConfirmation />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="settings" element={<SettingsPage />} />
@@ -74,6 +85,11 @@ function App() {
               <Route path="add-car" element={<AddCar />} />
               <Route path="inventories" element={<InventoryTable />} />
               <Route path="accessories-management" element={<AccessoriesManagement />} />
+              {/* Car Hire Admin Routes */}
+              <Route path="car-hire-management" element={<CarHireManagement />} />
+              <Route path="add-hire-car" element={<AddHireCar />} />
+              <Route path="edit-hire-car/:carId" element={<AddHireCar />} />
+              <Route path="car-hire-bookings" element={<CarHireBookings />} />
 
 
             </Route>
