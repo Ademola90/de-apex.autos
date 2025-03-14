@@ -20,6 +20,9 @@ import {
 import { toast } from "react-toastify";
 
 const CarHireBookings = () => {
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

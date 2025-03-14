@@ -20,6 +20,9 @@ import MapComponent from "../../components/car-hire/map-component";
 import { toast } from "react-toastify";
 
 const CarHireDetails = () => {
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
   const { carId } = useParams();
   const navigate = useNavigate();
   const { user } = useStore();

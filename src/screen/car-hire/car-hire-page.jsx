@@ -9,6 +9,9 @@ import Navbar from "../../components/navbar/navbar";
 import Footer from "../../components/footer/footer";
 
 const CarHirePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [location, setLocation] = useState("");
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");

@@ -23,6 +23,9 @@ import {
 import { toast } from "react-toastify";
 
 const CarHireManagement = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);

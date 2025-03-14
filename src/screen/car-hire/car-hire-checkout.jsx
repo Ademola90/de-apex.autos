@@ -17,6 +17,9 @@ import Footer from "../../components/footer/footer";
 import { toast } from "react-toastify";
 
 const CarHireCheckout = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { carId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
