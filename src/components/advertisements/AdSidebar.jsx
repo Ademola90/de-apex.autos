@@ -30,10 +30,9 @@ const AdSidebar = ({ ad, className = "" }) => {
 
   return (
     <div
-      className={`ad-sidebar relative flex items-center justify-center overflow-hidden rounded-lg shadow-md ${className}`}
+      className={`ad-sidebar relative overflow-hidden rounded-lg shadow-md ${className}`}
     >
-      <a
-        href={ad.link}
+      <p
         target="_blank"
         rel="noopener noreferrer"
         onClick={handleClick}
@@ -42,17 +41,19 @@ const AdSidebar = ({ ad, className = "" }) => {
         <img
           src={ad.image.secure_url || "/placeholder.svg"}
           alt={ad.title}
-          className="w-full h-auto object-cover"
+          className="w-full h-80 object-cover"
         />
         <div className="absolute top-0 right-0 bg-gray-800 bg-opacity-70 text-white text-xs px-2 py-1">
           Ad
         </div>
         {ad.title && (
-          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
-            <h3 className="text-sm font-medium">{ad.title}</h3>
+          <div className="absolute bottom-0 left-0 right-0 top-0 flex justify-center items-center bg-black bg-opacity-5 text-white p-2">
+            <h3 className="lg:text-3xl md:text-2xl text-2xl font-Outfit font-bold animate-pulse">
+              {ad.title}
+            </h3>
           </div>
         )}
-      </a>
+      </p>
     </div>
   );
 };

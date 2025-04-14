@@ -96,8 +96,11 @@ function App() {
               <Route path="car-hire-bookings" element={<CarHireBookings />} />
               <Route path="/admin/view-hire-car/:id" element={<ViewHireCar />} />
               <Route path="/admin/edit-hire-car/:id" element={<EditHireCar />} />
-              <Route path="advertisement-form" element={<AdvertisementForm />} />
               <Route path="advertisement-list" element={<AdvertisementList />} />
+              <Route path="advertisement-form" element={<AdvertisementForm />} />
+              <Route path="advertisement-form/:id" element={<AdvertisementForm />} />
+              <Route path="advertisements/edit/:id" element={<AdvertisementForm />} />
+
 
 
             </Route>
