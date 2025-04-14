@@ -28,7 +28,7 @@ const Sidebar = () => {
         { text: "Add New Car", route: "add-hire-car" },
       ],
     },
-    { icon: <Users />, text: "Customers", route: "" },
+    { icon: <Users />, text: "Advertisment", route: "advertisement-form" },
     { icon: <BarChart2 />, text: "Analytics", route: "" },
     { icon: <Settings />, text: "Settings", route: "settings" },
   ];

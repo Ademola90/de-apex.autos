@@ -3,16 +3,17 @@
 import { useState, useEffect } from "react";
 import { MapPin, Calendar, Clock, Search } from "lucide-react";
 import { fetchAllCars } from "../../utils/carHireApi";
+import { getAllStates } from "../../utils/nigerianStates";
 import CarCard from "../../components/car-hire/car-card";
 import CarHireHero from "../../components/car-hire/car-hire-hero";
 import Navbar from "../../components/navbar/navbar";
 import Footer from "../../components/footer/footer";
 
 const CarHirePage = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  const [location, setLocation] = useState("");
+  const [states, setStates] = useState([]);
+  const [pickupState, setPickupState] = useState("");
+  const [pickupCity, setPickupCity] = useState("");
+  const [pickupCities, setPickupCities] = useState([]);
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -21,6 +22,11 @@ const CarHirePage = () => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Load states
+  useEffect(() => {
+    setStates(getAllStates());
+  }, []);
 
   // Fetch cars from API
   useEffect(() => {
@@ -52,14 +58,15 @@ const CarHirePage = () => {
         status: "available",
       };
 
-      if (location) filters.location = location;
+      if (pickupState) filters.state = pickupState;
       if (carType) filters.type = carType;
 
       // Store search criteria in session storage for booking process
       sessionStorage.setItem(
         "carHireSearch",
         JSON.stringify({
-          location,
+          pickupState,
+          pickupCity,
           pickupDate,
           pickupTime,
           returnDate,
@@ -97,7 +104,7 @@ const CarHirePage = () => {
             >
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Pickup your Location
+                  Pickup State
                 </label>
                 <div className="relative">
                   <MapPin
@@ -106,13 +113,16 @@ const CarHirePage = () => {
                   />
                   <select
                     className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    value={pickupState}
+                    onChange={(e) => setPickupState(e.target.value)}
                     required
                   >
-                    <option value="">Select location</option>
-                    <option value="Osogbo">Osogbo, Osun State</option>
-                    <option value="Akure">Akure, Ondo State</option>
+                    <option value="">Select State</option>
+                    {states.map((state) => (
+                      <option key={state} value={state}>
+                        {state}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>

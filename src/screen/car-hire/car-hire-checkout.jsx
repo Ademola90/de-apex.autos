@@ -9,17 +9,17 @@ import {
   Check,
   ChevronRight,
   AlertCircle,
+  ArrowRight,
+  RotateCw,
 } from "lucide-react";
 import { fetchCarById, createBooking } from "../../utils/carHireApi";
 import useStore from "../../data/store/store";
 import Navbar from "../../components/navbar/navbar";
 import Footer from "../../components/footer/footer";
+import GoogleMapComponent from "../../components/car-hire/google-map";
 import { toast } from "react-toastify";
 
 const CarHireCheckout = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   const { carId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -131,8 +131,10 @@ const CarHireCheckout = () => {
         returnDate: bookingDetails.returnDate,
         returnTime: bookingDetails.returnTime,
         driverOption: bookingDetails.driverOption,
+        journeyType: bookingDetails.journeyType,
+        distance: bookingDetails.distance,
+        duration: bookingDetails.duration,
         totalDays: bookingDetails.totalDays,
-        totalPrice: bookingDetails.totalPrice,
         customerDetails: formData,
         paymentMethod,
       });
@@ -326,23 +328,15 @@ const CarHireCheckout = () => {
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           State
                         </label>
-                        <select
+                        <input
+                          type="text"
                           name="state"
                           value={formData.state}
                           onChange={handleInputChange}
                           className={`w-full p-2 border rounded-md focus:ring-mainBlue focus:border-mainBlue ${
                             errors.state ? "border-red-500" : "border-gray-300"
                           }`}
-                        >
-                          <option value="">Select State</option>
-                          <option value="Lagos">Lagos</option>
-                          <option value="Osun">Osun</option>
-                          <option value="Ondo">Ondo</option>
-                          <option value="Oyo">Oyo</option>
-                          <option value="Ogun">Ogun</option>
-                          <option value="Ekiti">Ekiti</option>
-                          <option value="FCT">FCT</option>
-                        </select>
+                        />
                         {errors.state && (
                           <p className="mt-1 text-sm text-red-500 error-message">
                             {errors.state}
@@ -436,11 +430,11 @@ const CarHireCheckout = () => {
 
                     <div
                       className={`border rounded-md p-4 cursor-pointer ${
-                        paymentMethod === "transfer"
+                        paymentMethod === "bank_transfer"
                           ? "border-mainBlue bg-blue-50"
                           : "border-gray-300"
                       }`}
-                      onClick={() => setPaymentMethod("transfer")}
+                      onClick={() => setPaymentMethod("bank_transfer")}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center">
@@ -460,7 +454,7 @@ const CarHireCheckout = () => {
                           </svg>
                           <span className="font-medium">Bank Transfer</span>
                         </div>
-                        {paymentMethod === "transfer" && (
+                        {paymentMethod === "bank_transfer" && (
                           <Check size={16} className="text-mainBlue" />
                         )}
                       </div>
@@ -468,11 +462,11 @@ const CarHireCheckout = () => {
 
                     <div
                       className={`border rounded-md p-4 cursor-pointer ${
-                        paymentMethod === "paystack"
+                        paymentMethod === "cash"
                           ? "border-mainBlue bg-blue-50"
                           : "border-gray-300"
                       }`}
-                      onClick={() => setPaymentMethod("paystack")}
+                      onClick={() => setPaymentMethod("cash")}
                     >
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center">
@@ -490,9 +484,9 @@ const CarHireCheckout = () => {
                               d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"
                             />
                           </svg>
-                          <span className="font-medium">Paystack</span>
+                          <span className="font-medium">Cash on Pickup</span>
                         </div>
-                        {paymentMethod === "paystack" && (
+                        {paymentMethod === "cash" && (
                           <Check size={16} className="text-mainBlue" />
                         )}
                       </div>
@@ -545,7 +539,7 @@ const CarHireCheckout = () => {
 
               <div className="flex items-center mb-4">
                 <img
-                  src={car.images[0]?.secure_url || "/placeholder.svg"}
+                  src={car.images?.[0]?.secure_url || "/placeholder.svg"}
                   alt={car.name}
                   className="w-20 h-20 object-cover rounded-md mr-4"
                 />
@@ -565,7 +559,9 @@ const CarHireCheckout = () => {
                   <div>
                     <p className="text-sm font-medium">Pickup Location</p>
                     <p className="text-sm text-gray-600">
-                      {bookingDetails.pickupLocation}
+                      {bookingDetails.pickupLocation.address},{" "}
+                      {bookingDetails.pickupLocation.city},{" "}
+                      {bookingDetails.pickupLocation.state}
                     </p>
                   </div>
                 </div>
@@ -575,7 +571,9 @@ const CarHireCheckout = () => {
                   <div>
                     <p className="text-sm font-medium">Dropoff Location</p>
                     <p className="text-sm text-gray-600">
-                      {bookingDetails.dropoffLocation}
+                      {bookingDetails.dropoffLocation.address},{" "}
+                      {bookingDetails.dropoffLocation.city},{" "}
+                      {bookingDetails.dropoffLocation.state}
                     </p>
                   </div>
                 </div>
@@ -617,6 +615,48 @@ const CarHireCheckout = () => {
                     </p>
                   </div>
                 </div>
+
+                <div className="flex items-start">
+                  {bookingDetails.journeyType === "one-way" ? (
+                    <ArrowRight
+                      size={18}
+                      className="text-gray-500 mr-2 mt-0.5"
+                    />
+                  ) : (
+                    <RotateCw size={18} className="text-gray-500 mr-2 mt-0.5" />
+                  )}
+                  <div>
+                    <p className="text-sm font-medium">Journey Type</p>
+                    <p className="text-sm text-gray-600">
+                      {bookingDetails.journeyType === "one-way"
+                        ? "One Way"
+                        : "Round Trip"}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-[18px] w-[18px] text-gray-500 mr-2 mt-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                    />
+                  </svg>
+                  <div>
+                    <p className="text-sm font-medium">Distance & Duration</p>
+                    <p className="text-sm text-gray-600">
+                      {bookingDetails.distance} km ({bookingDetails.duration})
+                    </p>
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-2 mb-4">
@@ -625,23 +665,22 @@ const CarHireCheckout = () => {
                     Car Rental ({bookingDetails.totalDays} day
                     {bookingDetails.totalDays > 1 ? "s" : ""})
                   </span>
-                  <span>
-                    ₦{(car.price * bookingDetails.totalDays).toLocaleString()}
-                  </span>
+                  <span>₦{bookingDetails.basePrice.toLocaleString()}</span>
                 </div>
 
                 {bookingDetails.driverOption === "chauffeur" && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Driver Fee</span>
-                    <span>
-                      ₦{(5000 * bookingDetails.totalDays).toLocaleString()}
-                    </span>
+                    <span>₦{bookingDetails.chauffeurFee.toLocaleString()}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Insurance</span>
-                  <span>Included</span>
+                  <span className="text-gray-600">
+                    Distance ({bookingDetails.distance} km × ₦10,000)
+                    {bookingDetails.journeyType === "round-trip" ? " × 2" : ""}
+                  </span>
+                  <span>₦{bookingDetails.distancePrice.toLocaleString()}</span>
                 </div>
 
                 <div className="flex justify-between font-bold text-lg pt-2 border-t">

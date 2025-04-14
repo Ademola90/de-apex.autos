@@ -25,6 +25,10 @@ import CarHireConfirmation from "./screen/car-hire/car-hire-confirmation"
 import CarHireManagement from "./admin/pages/car-hire-management"
 import AddHireCar from "./admin/pages/add-hire-car"
 import CarHireBookings from "./admin/pages/car-hire-bookings"
+import ViewHireCar from "./admin/components/view-hire-car"
+import EditHireCar from "./admin/components/edit-hire-car"
+import AdvertisementForm from "./admin/pages/advertisement-form"
+import AdvertisementList from "./admin/pages/advertisement-list"
 
 
 const AboutPage = lazy(() => import("./screen/about/about-page"))
@@ -88,8 +92,12 @@ function App() {
               {/* Car Hire Admin Routes */}
               <Route path="car-hire-management" element={<CarHireManagement />} />
               <Route path="add-hire-car" element={<AddHireCar />} />
-              <Route path="edit-hire-car/:carId" element={<AddHireCar />} />
+              {/* <Route path="edit-hire-car/:carId" element={<AddHireCar />} /> */}
               <Route path="car-hire-bookings" element={<CarHireBookings />} />
+              <Route path="/admin/view-hire-car/:id" element={<ViewHireCar />} />
+              <Route path="/admin/edit-hire-car/:id" element={<EditHireCar />} />
+              <Route path="advertisement-form" element={<AdvertisementForm />} />
+              <Route path="advertisement-list" element={<AdvertisementList />} />
 
 
             </Route>

@@ -3,24 +3,31 @@ import herobg from "../../assets/herobg.png";
 import { ArrowRightButtons, BuyCartButtons } from "../buttons";
 import { FaInstagram, FaInstagramSquare, FaTiktok } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import useStore from "../../data/store/store"; // Import useStore
+// import useStore from "../../data/store/store"
 import { toast } from "react-toastify"; // Import toast for notifications
 
 const Hero = () => {
   const navigate = useNavigate();
-  const { user } = useStore(); // Get user from store to check authentication
+  // const { user } = useStore();
 
-  // Handler for button clicks that require authentication
-  const handleAuthenticatedNavigation = (path) => {
-    if (!user) {
-      // Show toast notification if user is not logged in
-      toast.info("Login is required to access this feature.");
-      navigate("/login"); // Optionally redirect to login page
-      return;
-    }
-    // Navigate to the requested page if user is logged in
+  // Public navigation handler
+  const handlePublicNavigation = (path) => {
     navigate(path);
   };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  // Protected navigation handler (for features requiring login)
+  // const handleProtectedNavigation = (path) => {
+  //   if (!user) {
+  //     toast.info("Login required to access this feature");
+  //     navigate("/login");
+  //     return;
+  //   }
+  //   navigate(path);
+  // };
 
   return (
     <div
@@ -41,21 +48,37 @@ const Hero = () => {
       </div>
       <div className=" flex items-center gap-3 mt-10">
         <ArrowRightButtons
-          onClick={() =>
-            handleAuthenticatedNavigation("/service/services-page")
-          }
+          onClick={() => handlePublicNavigation("/service/services-page")}
           css={
             " text-base font-medium text-whiteColor w-36 h-10 bg-mainBlue hover:scale-105 hover:transition duration-300 "
           }
           text="Services"
         />
+        {/* <ArrowRightButtons
+          onClick={() =>
+            handleAuthenticatedNavigation("/service/services-page")
+          }
+          css={
+           
+          }
+          text="Services"
+        /> */}
+
         <BuyCartButtons
+          onClick={() => handleNavigation("/cars")}
+          css={
+            "Poppins text-base font-medium text-mainBlue w-36 h-10 bg-whiteColor  border-[1px] border-mainBlue hover:scale-105 hover:transition duration-300"
+          }
+          text="Browse Cars"
+        />
+
+        {/* <BuyCartButtons
           onClick={() => handleAuthenticatedNavigation("/cars")}
           css={
             "Poppins text-base font-medium text-mainBlue w-36 h-10 bg-whiteColor  border-[1px] border-mainBlue hover:scale-105 hover:transition duration-300"
           }
           text="Stocks"
-        />
+        /> */}
       </div>
 
       <div className=" flex items-center gap-3 mt-10">

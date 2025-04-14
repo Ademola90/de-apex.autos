@@ -11,46 +11,84 @@ import {
   Fuel,
   Gauge,
   Check,
+  ArrowRight,
+  RotateCw,
 } from "lucide-react";
 import { fetchCarById } from "../../utils/carHireApi";
 import useStore from "../../data/store/store";
 import Navbar from "../../components/navbar/navbar";
 import Footer from "../../components/footer/footer";
-import MapComponent from "../../components/car-hire/map-component";
+// import LeafletMapComponent from "../../components/car-hire/leaflet-map";
+import { getAllStates, getCitiesByState } from "../../utils/nigerianStates";
 import { toast } from "react-toastify";
+import LeafletMapComponent from "../../components/car-hire/google-map";
 
 const CarHireDetails = () => {
-      useEffect(() => {
-        window.scrollTo(0, 0);
-      }, []);
   const { carId } = useParams();
   const navigate = useNavigate();
   const { user } = useStore();
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [dropoffLocation, setDropoffLocation] = useState("");
+
+  // Location states
+  const [pickupState, setPickupState] = useState("");
+  const [pickupCity, setPickupCity] = useState("");
+  const [pickupAddress, setPickupAddress] = useState("");
+  const [dropoffState, setDropoffState] = useState("");
+  const [dropoffCity, setDropoffCity] = useState("");
+  const [dropoffAddress, setDropoffAddress] = useState("");
+
+  // Date and time states
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
+
+  // Options states
   const [driverOption, setDriverOption] = useState("self");
-  const [totalDays, setTotalDays] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [journeyType, setJourneyType] = useState("one-way");
+
+  // Distance and pricing states
   const [distance, setDistance] = useState(null);
   const [duration, setDuration] = useState(null);
+  const [totalDays, setTotalDays] = useState(1);
+  const [distancePrice, setDistancePrice] = useState(0);
+  const [basePrice, setBasePrice] = useState(0);
+  const [chauffeurFee, setChauffeurFee] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  // States list
+  const [states, setStates] = useState([]);
+  const [pickupCities, setPickupCities] = useState([]);
+  const [dropoffCities, setDropoffCities] = useState([]);
+
+  // Load states and cities
+  useEffect(() => {
+    setStates(getAllStates());
+  }, []);
+
+  useEffect(() => {
+    if (pickupState) {
+      setPickupCities(getCitiesByState(pickupState));
+    }
+
+    if (dropoffState) {
+      setDropoffCities(getCitiesByState(dropoffState));
+    }
+  }, [pickupState, dropoffState]);
 
   // Load saved search criteria from session storage
   useEffect(() => {
     const savedSearch = sessionStorage.getItem("carHireSearch");
     if (savedSearch) {
       const search = JSON.parse(savedSearch);
-      setPickupLocation(search.location || "");
-      setPickupDate(search.pickupDate || "");
-      setPickupTime(search.pickupTime || "");
-      setReturnDate(search.returnDate || "");
-      setReturnTime(search.returnTime || "");
+      if (search.pickupState) setPickupState(search.pickupState);
+      if (search.pickupCity) setPickupCity(search.pickupCity);
+      if (search.pickupDate) setPickupDate(search.pickupDate);
+      if (search.pickupTime) setPickupTime(search.pickupTime);
+      if (search.returnDate) setReturnDate(search.returnDate);
+      if (search.returnTime) setReturnTime(search.returnTime);
     }
   }, []);
 
@@ -61,6 +99,7 @@ const CarHireDetails = () => {
         setLoading(true);
         const response = await fetchCarById(carId);
         setCar(response.car);
+        setBasePrice(response.car.price);
         setError(null);
       } catch (err) {
         console.error("Error fetching car details:", err);
@@ -84,30 +123,110 @@ const CarHireDetails = () => {
     }
   }, [pickupDate, returnDate]);
 
+  // Calculate total price
   useEffect(() => {
     if (car && totalDays) {
-      let basePrice = car.price * totalDays;
-      if (driverOption === "chauffeur") {
-        basePrice += 5000 * totalDays; // Add driver fee
-      }
-      setTotalPrice(basePrice);
-    }
-  }, [car, totalDays, driverOption]);
+      const dailyRate = car.price * totalDays;
+      const driverFee = driverOption === "chauffeur" ? 5000 * totalDays : 0;
 
-  // Calculate distance and duration when locations change
-  useEffect(() => {
-    if (pickupLocation && dropoffLocation) {
-      // This would be replaced with actual API call to Google Maps or similar
-      // Mock data  {
-      // This would be replaced with actual API call to Google Maps or similar
-      // Mock data
-      setDistance("120 km");
-      setDuration("2 hours 15 minutes");
+      // Calculate distance price (₦10,000 per km)
+      let distPrice = distance ? distance * 10000 : 0;
+
+      // Double the distance price for round trips
+      if (journeyType === "round-trip") {
+        distPrice *= 2;
+      }
+
+      setBasePrice(dailyRate);
+      setChauffeurFee(driverFee);
+      setDistancePrice(distPrice);
+      setTotalPrice(dailyRate + driverFee + distPrice);
     }
-  }, [pickupLocation, dropoffLocation]);
+  }, [car, totalDays, driverOption, distance, journeyType]);
+
+  // Handle distance calculation from LeafletMapComponent
+  const handleDistanceCalculated = (calculatedDistance, calculatedDuration) => {
+    if (calculatedDistance && calculatedDuration) {
+      setDistance(calculatedDistance);
+      setDuration(calculatedDuration);
+    } else {
+      setDistance(null);
+      setDuration(null);
+      toast.error("Failed to calculate route. Please check the locations.");
+    }
+  };
+
+  // Check if form is complete for map rendering
+  const canShowMap =
+    pickupState &&
+    pickupCity &&
+    pickupAddress &&
+    dropoffState &&
+    dropoffCity &&
+    dropoffAddress;
+
+  const pickupLocation = canShowMap
+    ? {
+        state: pickupState,
+        city: pickupCity,
+        address: pickupAddress,
+      }
+    : null;
+
+  const dropoffLocation = canShowMap
+    ? {
+        state: dropoffState,
+        city: dropoffCity,
+        address: dropoffAddress,
+      }
+    : null;
+
+  // Check if form is complete
+  const isFormComplete = () => {
+    return (
+      pickupState &&
+      pickupCity &&
+      pickupAddress &&
+      dropoffState &&
+      dropoffCity &&
+      dropoffAddress &&
+      pickupDate &&
+      pickupTime &&
+      returnDate &&
+      returnTime &&
+      distance !== null &&
+      duration !== null
+    );
+  };
+
+  // Get message for incomplete form
+  const getMissingFieldsMessage = () => {
+    if (!pickupState || !pickupCity || !pickupAddress) {
+      return "Please Complete Pickup Details";
+    }
+    if (!dropoffState || !dropoffCity || !dropoffAddress) {
+      return "Please Complete Dropoff Details";
+    }
+    if (!pickupDate || !pickupTime) {
+      return "Please Set Pickup Date & Time";
+    }
+    if (!returnDate || !returnTime) {
+      return "Please Set Return Date & Time";
+    }
+    if (distance === null || duration === null) {
+      return "Calculating Route...";
+    }
+    return "Please Complete All Details";
+  };
 
   const handleBooking = (e) => {
     e.preventDefault();
+
+    // Validate form
+    if (!isFormComplete()) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
 
     if (!user) {
       // Redirect to login if not logged in
@@ -117,14 +236,28 @@ const CarHireDetails = () => {
           redirectTo: `/car-hire/checkout/${carId}`,
           bookingDetails: {
             carId,
-            pickupLocation,
-            dropoffLocation,
+            pickupLocation: {
+              state: pickupState,
+              city: pickupCity,
+              address: pickupAddress,
+            },
+            dropoffLocation: {
+              state: dropoffState,
+              city: dropoffCity,
+              address: dropoffAddress,
+            },
             pickupDate,
             pickupTime,
             returnDate,
             returnTime,
             driverOption,
+            journeyType,
+            distance,
+            duration,
             totalDays,
+            basePrice,
+            chauffeurFee,
+            distancePrice,
             totalPrice,
           },
         },
@@ -137,14 +270,28 @@ const CarHireDetails = () => {
       state: {
         bookingDetails: {
           carId,
-          pickupLocation,
-          dropoffLocation,
+          pickupLocation: {
+            state: pickupState,
+            city: pickupCity,
+            address: pickupAddress,
+          },
+          dropoffLocation: {
+            state: dropoffState,
+            city: dropoffCity,
+            address: dropoffAddress,
+          },
           pickupDate,
           pickupTime,
           returnDate,
           returnTime,
           driverOption,
+          journeyType,
+          distance,
+          duration,
           totalDays,
+          basePrice,
+          chauffeurFee,
+          distancePrice,
           totalPrice,
         },
       },
@@ -192,7 +339,7 @@ const CarHireDetails = () => {
             <div className="bg-white rounded-lg shadow-lg overflow-hidden">
               <div className="relative h-[300px] md:h-[400px]">
                 <img
-                  src={car.images[0]?.secure_url || "/placeholder.svg"}
+                  src={car.images?.[0]?.secure_url || "/placeholder.svg"}
                   alt={car.name}
                   className="w-full h-full object-cover"
                 />
@@ -216,14 +363,14 @@ const CarHireDetails = () => {
                         >
                           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                         </svg>
-                        <span className="ml-1 text-gray-600">
+                        <span className="ml-1 text-sm text-gray-600">
                           {car.rating} ({car.reviews || 0} reviews)
                         </span>
                       </div>
                       <span className="mx-2 text-gray-300">|</span>
                       <div className="flex items-center">
                         <MapPin size={16} className="text-gray-500" />
-                        <span className="ml-1 text-gray-600">
+                        <span className="ml-1 text-sm text-gray-600">
                           {car.location}
                         </span>
                       </div>
@@ -277,38 +424,50 @@ const CarHireDetails = () => {
                     Features
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {car.features.map((feature, index) => (
-                      <div key={index} className="flex items-center">
-                        <Check size={16} className="text-mainBlue mr-2" />
-                        <span className="text-gray-700">{feature}</span>
-                      </div>
-                    ))}
+                    {car.features &&
+                      car.features.map((feature, index) => (
+                        <div key={index} className="flex items-center">
+                          <Check size={16} className="text-mainBlue mr-2" />
+                          <span className="text-gray-700">{feature}</span>
+                        </div>
+                      ))}
                   </div>
                 </div>
 
-                {pickupLocation && dropoffLocation && (
+                {canShowMap && (
                   <div className="mb-6">
                     <h2 className="text-xl font-semibold mb-3 text-blackColor">
                       Route Information
                     </h2>
                     <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex justify-between mb-4">
-                        <div>
-                          <p className="text-sm text-gray-500">Distance</p>
-                          <p className="font-semibold">{distance}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">
-                            Estimated Duration
-                          </p>
-                          <p className="font-semibold">{duration}</p>
-                        </div>
-                      </div>
-                      <MapComponent
+                      <LeafletMapComponent
                         pickupLocation={pickupLocation}
                         dropoffLocation={dropoffLocation}
                         height="300px"
+                        onDistanceCalculated={handleDistanceCalculated}
                       />
+                      {distance && duration && (
+                        <div className="flex justify-between mt-4 p-3 bg-blue-50 rounded-md">
+                          <div>
+                            <p className="text-sm text-gray-500">Distance</p>
+                            <p className="font-semibold">{distance} km</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">
+                              Estimated Duration
+                            </p>
+                            <p className="font-semibold">{duration}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500">
+                              Distance Price
+                            </p>
+                            <p className="font-semibold">
+                              ₦{distancePrice.toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -323,9 +482,10 @@ const CarHireDetails = () => {
                 Book This Car
               </h2>
               <form onSubmit={handleBooking} className="space-y-4">
+                {/* Pickup Location */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    Pickup Location
+                    Pickup State
                   </label>
                   <div className="relative">
                     <MapPin
@@ -334,20 +494,58 @@ const CarHireDetails = () => {
                     />
                     <select
                       className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
-                      value={pickupLocation}
-                      onChange={(e) => setPickupLocation(e.target.value)}
+                      value={pickupState}
+                      onChange={(e) => setPickupState(e.target.value)}
                       required
                     >
-                      <option value="">Select location</option>
-                      <option value="Osogbo">Osogbo, Osun State</option>
-                      <option value="Akure">Akure, Ondo State</option>
+                      <option value="">Select State</option>
+                      {states.map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    Dropoff Location
+                    Pickup City
+                  </label>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
+                    value={pickupCity}
+                    onChange={(e) => setPickupCity(e.target.value)}
+                    required
+                    disabled={!pickupState}
+                  >
+                    <option value="">Select City</option>
+                    {pickupCities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Pickup Address
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
+                    value={pickupAddress}
+                    onChange={(e) => setPickupAddress(e.target.value)}
+                    placeholder="Enter specific address"
+                    required
+                  />
+                </div>
+
+                {/* Dropoff Location */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Dropoff State
                   </label>
                   <div className="relative">
                     <MapPin
@@ -356,19 +554,55 @@ const CarHireDetails = () => {
                     />
                     <select
                       className="pl-10 w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
-                      value={dropoffLocation}
-                      onChange={(e) => setDropoffLocation(e.target.value)}
+                      value={dropoffState}
+                      onChange={(e) => setDropoffState(e.target.value)}
                       required
                     >
-                      <option value="">Select location</option>
-                      <option value="Osogbo">Osogbo, Osun State</option>
-                      <option value="Akure">Akure, Ondo State</option>
-                      <option value="Lagos">Lagos</option>
-                      <option value="Ibadan">Ibadan, Oyo State</option>
+                      <option value="">Select State</option>
+                      {states.map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
 
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Dropoff City
+                  </label>
+                  <select
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
+                    value={dropoffCity}
+                    onChange={(e) => setDropoffCity(e.target.value)}
+                    required
+                    disabled={!dropoffState}
+                  >
+                    <option value="">Select City</option>
+                    {dropoffCities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Dropoff Address
+                  </label>
+                  <input
+                    type="text"
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-mainBlue focus:border-mainBlue"
+                    value={dropoffAddress}
+                    onChange={(e) => setDropoffAddress(e.target.value)}
+                    placeholder="Enter specific address"
+                    required
+                  />
+                </div>
+
+                {/* Date and Time */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">
@@ -453,6 +687,55 @@ const CarHireDetails = () => {
                   </div>
                 </div>
 
+                {/* Journey Type */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Journey Type
+                  </label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div
+                      className={`border rounded-md p-3 cursor-pointer ${
+                        journeyType === "one-way"
+                          ? "border-mainBlue bg-blue-50"
+                          : "border-gray-300"
+                      }`}
+                      onClick={() => setJourneyType("one-way")}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium">One Way</span>
+                        {journeyType === "one-way" && (
+                          <Check size={16} className="text-mainBlue" />
+                        )}
+                      </div>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <ArrowRight size={14} className="mr-1" />
+                        <span>Single direction</span>
+                      </div>
+                    </div>
+
+                    <div
+                      className={`border rounded-md p-3 cursor-pointer ${
+                        journeyType === "round-trip"
+                          ? "border-mainBlue bg-blue-50"
+                          : "border-gray-300"
+                      }`}
+                      onClick={() => setJourneyType("round-trip")}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium">Round Trip</span>
+                        {journeyType === "round-trip" && (
+                          <Check size={16} className="text-mainBlue" />
+                        )}
+                      </div>
+                      <div className="flex items-center text-xs text-gray-500">
+                        <RotateCw size={14} className="mr-1" />
+                        <span>Return journey</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Driver Option */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
                     Driver Option
@@ -503,7 +786,7 @@ const CarHireDetails = () => {
                       {totalDays > 1 ? "s" : ""}
                     </span>
                     <span className="font-medium">
-                      ₦{(car.price * totalDays).toLocaleString()}
+                      ₦{basePrice.toLocaleString()}
                     </span>
                   </div>
 
@@ -514,7 +797,19 @@ const CarHireDetails = () => {
                         {totalDays > 1 ? "s" : ""})
                       </span>
                       <span className="font-medium">
-                        ₦{(5000 * totalDays).toLocaleString()}
+                        ₦{chauffeurFee.toLocaleString()}
+                      </span>
+                    </div>
+                  )}
+
+                  {distance > 0 && (
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-600">
+                        Distance ({distance} km × ₦10,000)
+                        {journeyType === "round-trip" ? " × 2" : ""}
+                      </span>
+                      <span className="font-medium">
+                        ₦{distancePrice.toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -529,9 +824,16 @@ const CarHireDetails = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-mainBlue text-white py-3 px-4 rounded-md hover:bg-blue-700 transition duration-300"
+                  className={`w-full py-3 px-4 rounded-md transition duration-300 ${
+                    isFormComplete()
+                      ? "bg-mainBlue text-white hover:bg-blue-700"
+                      : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  }`}
+                  disabled={!isFormComplete()}
                 >
-                  Continue to Booking
+                  {isFormComplete()
+                    ? "Continue to Booking"
+                    : getMissingFieldsMessage()}
                 </button>
 
                 <div className="flex items-center justify-center text-sm text-gray-500 mt-4">

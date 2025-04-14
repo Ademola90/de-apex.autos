@@ -3,15 +3,15 @@
 import axios from "axios";
 
 const api = axios.create({
-  // baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://de-apex-autos-backend.onrender.com/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+  // baseURL: process.env.NEXT_PUBLIC_API_URL || "https://de-apex-autos-backend.onrender.com/api",
 });
 
 // Add the access token and API key to the request headers
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY || "your_api_key_here";
+    const apiKey = process.env.NEXT_PUBLIC_API_KEY || "api_key_here";
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

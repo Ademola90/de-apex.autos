@@ -32,13 +32,17 @@ const CarAccessoriesCard = () => {
   }, []);
 
   const handleViewDetails = (accessoryId) => {
-    if (!user) {
-      toast.info("Please log in to view accessory details.");
-      navigate("/login");
-      return;
-    }
-    navigate(`/accessory-details/${accessoryId}`);
+    navigate(`/accessory-details/${accessoryId}`); // Always allow navigation
   };
+
+  // const handleViewDetails = (accessoryId) => {
+  //   if (!user) {
+  //     toast.info("Please log in to view accessory details.");
+  //     navigate("/login");
+  //     return;
+  //   }
+  //   navigate(`/accessory-details/${accessoryId}`);
+  // };
 
   // Loading skeleton
   if (isLoading) {

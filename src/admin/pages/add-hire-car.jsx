@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Upload, Plus, X } from "lucide-react";
 import Header from "../components/Header";
+import { addCar } from "../../utils/carHireApi";
 
 const AddHireCar = () => {
   useEffect(() => {
@@ -117,7 +118,6 @@ const AddHireCar = () => {
     e.preventDefault();
 
     if (!validateForm()) {
-      // Scroll to first error
       const firstError = document.querySelector(".error-message");
       if (firstError) {
         firstError.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -127,13 +127,27 @@ const AddHireCar = () => {
 
     setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Prepare the data
+      const carData = {
+        ...formData,
+        // Convert images to the format expected by the API
+        images: images.map((img) => img.file),
+      };
+
+      // Make the actual API call
+      await addCar(carData);
+
       setLoading(false);
       navigate("/admin/car-hire-management", {
         state: { success: true, message: "Car added successfully" },
       });
-    }, 1500);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error adding car:", error);
+      // Show error message to user
+      alert("Failed to add car. Please try again.");
+    }
   };
 
   return (
@@ -205,7 +219,7 @@ const AddHireCar = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Price per Day (₦)
+                  Price per Kilometer (₦)
                 </label>
                 <input
                   type="number"
