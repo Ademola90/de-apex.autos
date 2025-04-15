@@ -157,7 +157,7 @@ const CarCard = () => {
             return (
               <div
                 key={car._id}
-                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px] group"
+                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 transition-all duration-300 lg:hover:shadow-xl lg:hover:translate-y-[-5px] group"
                 onClick={() => handleViewDetails(car._id)}
               >
                 {/* Image Container with Overlay */}
@@ -192,7 +192,7 @@ const CarCard = () => {
                   )}
 
                   {/* view */}
-                  <div className="absolute flex justify-center items-center w-full top-20">
+                  <div className="absolute lg:flex md:hidden hidden justify-center items-center w-full top-20">
                     <button
                       className="w-full py-2 text-whiteColor rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       onClick={(e) => {

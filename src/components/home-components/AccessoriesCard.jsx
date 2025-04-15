@@ -126,7 +126,7 @@ const CarAccessoriesCard = () => {
             return (
               <div
                 key={accessory._id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px] group"
+                className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 lg:hover:shadow-xl lg:hover:translate-y-[-5px] group"
                 onClick={() => handleViewDetails(accessory._id)}
               >
                 {/* Image Container with Overlay */}
@@ -157,7 +157,7 @@ const CarAccessoriesCard = () => {
                   )}
 
                   {/* Quick Action Buttons */}
-                  <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 lg:flex md:hidden hidden items-center justify-center">
                     <button
                       className="bg-white text-mainBlue p-3 rounded-full mx-2 hover:bg-mainBlue hover:text-white transition-colors"
                       onClick={(e) => {
