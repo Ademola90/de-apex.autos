@@ -48,8 +48,17 @@ const CarAccessoriesCard = () => {
     fetchAds();
   }, []);
 
+  // const handleViewDetails = (accessoryId) => {
+  //   navigate(`/accessory-details/${accessoryId}`); // Always allow navigation
+  // };
+
   const handleViewDetails = (accessoryId) => {
-    navigate(`/accessory-details/${accessoryId}`); // Always allow navigation
+    if (!user) {
+      toast.info("Please log in to view car details.");
+      navigate("/login");
+      return;
+    }
+    navigate(`/accessory-details/${accessoryId}`);
   };
 
   // Insert ads at specific positions

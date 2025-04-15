@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../../utils/api";
 import useStore from "../../data/store/store";
 import AdInline from "../advertisements/AdInline";
+import { toast } from "react-toastify";
 
 const CarCard = () => {
   const [cars, setCars] = useState([]);
@@ -62,8 +63,17 @@ const CarCard = () => {
     });
   };
 
+  // const handleViewDetails = (carId) => {
+  //   navigate(`/details/${carId}`); // Always allow navigation to details
+  // };
+
   const handleViewDetails = (carId) => {
-    navigate(`/details/${carId}`); // Always allow navigation to details
+    if (!user) {
+      toast.info("Please log in to view car details.");
+      navigate("/login");
+      return;
+    }
+    navigate(`/details/${carId}`);
   };
 
   // Insert ads at specific positions

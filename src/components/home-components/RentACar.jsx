@@ -1,7 +1,9 @@
 import React from "react";
 import imgfive from "../../assets/imgfive.png";
+import { useNavigate } from "react-router-dom";
 
 const RentACar = () => {
+  const navigate = useNavigate();
   return (
     <div className="lg:flex md:grid grid items-center justify-center gap-10 w-full lg:px-16 md:px-10 px-8 mt-20 mb-10">
       {/* Image Section */}
@@ -22,7 +24,10 @@ const RentACar = () => {
           journey. Whether it's a business trip or a weekend getaway, we make
           renting cars simple and affordable.
         </p>
-        <button className="mt-6 bg-mainBlue text-white px-6 py-3 text-lg font-medium hover:scale-105 hover:transition duration-300 transition-all">
+        <button
+          onClick={() => navigate("/car-hire")}
+          className="mt-6 bg-mainBlue text-white px-6 py-3 text-lg font-medium hover:scale-105 hover:transition duration-300 transition-all"
+        >
           Read More →
         </button>
       </div>
