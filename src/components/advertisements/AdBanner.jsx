@@ -42,8 +42,7 @@ const AdBanner = ({ ad, className = "" }) => {
         isVisible ? "opacity-100" : "opacity-0 translate-y-4"
       } ${className}`}
     >
-      <a
-        href={ad.link}
+      <p
         target="_blank"
         rel="noopener noreferrer"
         onClick={handleClick}
@@ -81,11 +80,11 @@ const AdBanner = ({ ad, className = "" }) => {
             )}
 
             {/* CTA Button with hover effect */}
-            <div className="mt-auto">
+            {/* <div className="mt-auto">
               <span className="inline-block px-4 py-2 bg-mainBlue hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-all duration-300 transform hover:scale-105">
                 Learn More
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -115,7 +114,7 @@ const AdBanner = ({ ad, className = "" }) => {
             Learn More
           </span>
         </div>
-      </a>
+      </p>
     </div>
   );
 };

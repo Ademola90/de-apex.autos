@@ -63,8 +63,7 @@ const AdInline = ({ ad, className = "" }) => {
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        <a
-          href={ad.link}
+        <p
           target="_blank"
           rel="noopener noreferrer"
           onClick={handleClick}
@@ -106,7 +105,7 @@ const AdInline = ({ ad, className = "" }) => {
                   </p>
                 )}
 
-                <div className="mt-2 stagger-3">
+                {/* <div className="mt-2 stagger-3">
                   <span
                     className={`inline-block px-4 py-2 bg-mainBlue text-white font-medium rounded-md transition-all duration-300 ${
                       isHovered ? "bg-blue-700" : ""
@@ -114,11 +113,11 @@ const AdInline = ({ ad, className = "" }) => {
                   >
                     Discover Now
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
-        </a>
+        </p>
       </div>
     </div>
   );
