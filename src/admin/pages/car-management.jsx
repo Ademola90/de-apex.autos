@@ -184,31 +184,33 @@ const CarManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsLoading(true);
 
     try {
       const token = user?.token;
-      if (!token) {
-        throw new Error("No token available for the request.");
-      }
+      if (!token) throw new Error("No token available for the request.");
 
       const formData = new FormData();
-      Object.keys(carForm).forEach((key) => formData.append(key, carForm[key]));
-      imageFiles.forEach((file, index) =>
-        file instanceof File
-          ? formData.append("images", file)
-          : formData.append("existingImages", file)
-      );
 
-      // Append the image order to the form data
-      formData.append(
-        "imageOrder",
-        JSON.stringify(imageFiles.map((file, index) => index))
-      );
+      // Append text fields
+      Object.keys(carForm).forEach((key) => formData.append(key, carForm[key]));
+
+      // Separate existing images (from DB) and new files
+      const existingImages = imageFiles.filter((img) => !(img instanceof File));
+      const newImages = imageFiles.filter((img) => img instanceof File);
+
+      // Append existing images as JSON array to maintain order and structure
+      formData.append("existingImages", JSON.stringify(existingImages));
+
+      // Append new image files
+      newImages.forEach((file) => formData.append("images", file));
+
+      // Add replaceImages flag based on edit mode
+      if (editingCarId) {
+        formData.append("replaceImages", "false");
+      }
 
       const endpoint = editingCarId ? `/car/cars/${editingCarId}` : "/car/cars";
       const method = editingCarId ? api.put : api.post;
@@ -223,7 +225,13 @@ const CarManagement = () => {
       if (editingCarId) {
         setCars((prevCars) =>
           prevCars.map((car) =>
-            car._id === editingCarId ? { ...car, ...response.data.car } : car
+            car._id === editingCarId
+              ? {
+                  ...car,
+                  ...response.data.car,
+                  images: [...existingImages, ...newImages],
+                }
+              : car
           )
         );
         alert("Car updated successfully");
@@ -235,7 +243,9 @@ const CarManagement = () => {
       resetForm();
     } catch (error) {
       console.error("Error saving car:", error.response?.data || error.message);
-      alert("An error occurred while saving the car.");
+      alert(
+        `An error occurred: ${error.response?.data?.message || error.message}`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -470,15 +480,6 @@ const CarManagement = () => {
               setImages={setImageFiles}
               onRemoveImage={removeImage}
             />
-
-            {/* <DraggableImageGrid
-              images={imageFiles}
-              setImages={setImageFiles}
-              onRemoveImage={removeImage}
-              onMove={(fromIndex, toIndex) =>
-                handleMoveImage(editingCarId, fromIndex, toIndex)
-              }
-            /> */}
 
             <div className="flex items-center justify-end space-x-3 mt-6">
               <Button variant="outline" type="button" onClick={resetForm}>

@@ -170,33 +170,35 @@ const AccessoriesManagement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsLoading(true);
 
     try {
       const token = user?.token;
-      if (!token) {
-        throw new Error("No token available for the request.");
-      }
+      if (!token) throw new Error("No token available for the request.");
 
       const formData = new FormData();
+
+      // Append text fields
       Object.keys(accessoryForm).forEach((key) =>
         formData.append(key, accessoryForm[key])
       );
-      imageFiles.forEach((file, index) =>
-        file instanceof File
-          ? formData.append("images", file)
-          : formData.append("existingImages", file)
-      );
 
-      // Append the image order to the form data
-      formData.append(
-        "imageOrder",
-        JSON.stringify(imageFiles.map((file, index) => index))
-      );
+      // Separate existing images (from DB) and new files
+      const existingImages = imageFiles.filter((img) => !(img instanceof File));
+      const newImages = imageFiles.filter((img) => img instanceof File);
+
+      // Append existing images as JSON array to maintain order and structure
+      formData.append("existingImages", JSON.stringify(existingImages));
+
+      // Append new image files
+      newImages.forEach((file) => formData.append("images", file));
+
+      // Add replaceImages flag based on edit mode
+      if (editingAccessoryId) {
+        formData.append("replaceImages", "false");
+      }
 
       const endpoint = editingAccessoryId
         ? `/accessory/accessories/${editingAccessoryId}`
@@ -214,7 +216,11 @@ const AccessoriesManagement = () => {
         setAccessories((prevAccessories) =>
           prevAccessories.map((accessory) =>
             accessory._id === editingAccessoryId
-              ? { ...accessory, ...response.data.accessory }
+              ? {
+                  ...accessory,
+                  ...response.data.accessory,
+                  images: [...existingImages, ...newImages],
+                }
               : accessory
           )
         );
@@ -230,7 +236,9 @@ const AccessoriesManagement = () => {
         "Error saving accessory:",
         error.response?.data || error.message
       );
-      alert("An error occurred while saving the accessory.");
+      alert(
+        `An error occurred: ${error.response?.data?.message || error.message}`
+      );
     } finally {
       setIsLoading(false);
     }
