@@ -29,6 +29,7 @@ import ViewHireCar from "./admin/components/view-hire-car"
 import EditHireCar from "./admin/components/edit-hire-car"
 import AdvertisementForm from "./admin/pages/advertisement-form"
 import AdvertisementList from "./admin/pages/advertisement-list"
+import PrivateRoute from "./admin/components/PrivateRoute"
 
 
 const AboutPage = lazy(() => import("./screen/about/about-page"))
@@ -82,7 +83,23 @@ function App() {
             <Route path="/car-hire/details/:carId" element={<CarHireDetails />} />
             <Route path="/car-hire/checkout/:carId" element={<CarHireCheckout />} />
             <Route path="/car-hire/confirmation" element={<CarHireConfirmation />} />
-            <Route path="/admin" element={<AdminLayout />}>
+            {/* <Route path="/admin" element={<AdminLayout />}>  */}
+            <Route
+              path="/admin"
+              element={
+                <PrivateRoute allowedRoles={['admin', 'super_admin']}>
+                  <AdminLayout />
+                </PrivateRoute>
+              }
+            >
+              {/* <Route
+                path="/create-admin"
+                element={
+                  <PrivateRoute allowedRoles={['super_admin']}>
+                    <AdminCreation />
+                  </PrivateRoute>
+                }
+              /> */}
               <Route path="dashboard" element={<DashboardPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="car-management" element={<CarManagement />} />
